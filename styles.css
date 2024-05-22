@@ -19,7 +19,7 @@ body {
 
 header {
     background-color: #1c1c1c;
-    /*padding: 10px; vai deixar o header maior*/
+    padding: 10px
 }
 
 #logo {
@@ -109,54 +109,11 @@ nav ul li a:hover {
     margin-right: 14px;
 }
 
-  #wrapper {
-    width: 100%;
-    max-width: 1750px;
-    position: relative;
-  }
-  
-  #carousel {
-    overflow: auto;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-  }
-  
-  #carousel::-webkit-scrollbar {
-    height: 0;
-  }
-  
-  #prev,
-  #next {
+
+.filme-item2 {
+    width: 70%;
+    height: 400px;
+    margin: 0 auto;
     display: flex;
-    justify-content: center;
-    align-content: center;
-    background: white;
-    border: none;
-    padding: 8px;
-    border-radius: 50%;
-    outline: 0;
-    cursor: pointer;
-    position: absolute;
-  }
-  
-  #prev {
-    top: 50%;
-    left: 0;
-    transform: translate(50%, -50%);
-    display: none;
-  }
-  
-  #next {
-    top: 50%;
-    right: 0;
-    transform: translate(-50%, -50%);
-  }
-  
-  #content {
-    display: grid;
-    grid-gap: 16px;
-    grid-auto-flow: column;
-    margin: auto;
-    box-sizing: border-box;
-  }
-  
+    align-items: center; 
+}
