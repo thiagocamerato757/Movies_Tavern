@@ -1,5 +1,10 @@
 from flask import Flask, render_template, request
+import requests
 
+app = Flask(__name__)
+
+# Sua chave de API do TMDb
+API_KEY = 'b1caf5476a4a9ee94eb6aa3741ee91b4'
 @app.route('/')
 def home():
     return render_template('TelaInicial.html')
