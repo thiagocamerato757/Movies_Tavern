@@ -4,22 +4,23 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #333;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    background-color: #1c1c1c;
     color: #fff;
 }
 
 .container {
-    width: 80%;
+    width: 70%;
     margin: 0 auto;
     padding: 20px;
     display: flex;
     align-items: center;
+    position: absolute;
 }
 
-header {
-    background-color: #1c1c1c;
-    padding: 10px
+header{
+    display: flex;
+    justify-content: center;
 }
 
 #logo {
@@ -30,10 +31,12 @@ header {
 nav ul {
     list-style: none;
     display: flex;
+    
 }
 
 nav ul li {
     margin-right: 20px;
+    
 }
 
 nav ul li a {
@@ -79,7 +82,7 @@ nav ul li a:hover {
 .retangulo {
     width: 200px;
     height: 300px;
-    background-color: #1c1c1c;
+    background-color: #333;
     border-radius: 5px;
     margin: 10px;
 }
@@ -96,7 +99,7 @@ nav ul li a:hover {
 }
 
 .titulo-lista {
-    margin-left: 50px;
+    text-align: center;
 }
 
 .filme-titulo {
@@ -110,10 +113,14 @@ nav ul li a:hover {
 }
 
 
-.filme-item2 {
-    width: 70%;
-    height: 400px;
+.backimg {
+    width: 80%;
+    height: 480px;
     margin: 0 auto;
     display: flex;
-    align-items: center; 
+    align-items: center;
+    z-index: -1;
+    position: relative;
+    mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
 }
