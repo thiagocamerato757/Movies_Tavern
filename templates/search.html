@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Movies Tavern</title>
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+
+            <h1 id="logo">Movies Tavern</h1>
+            <nav>
+                <ul>
+                    <li><a href="#">Login</a></li>
+                    <li><a href="#">Criar conta</a></li>
+                    <li><a href="#">Início</a></li>
+                </ul>
+            </nav>
+            <form class="barra-pesquisa" action="/search" method="GET">
+                <input type="text" name="query" placeholder="Pesquisar..." required>
+                <button type="submit" class="botao-pesquisa">
+                    <img src="static/pesquisa-de-lupa.png" alt="Lupa" class="icone-lupa">
+                </button>
+            </form>
+            
+        </div>
+    </header>
+<body>
+    <div class="search-section">
+        {% if movies %}
+            <h2>Resultados:</h2>
+                <br>
+                <ul>
+                    {% for movie in movies %}
+                        <li>
+                            <h3>{{ movie.title }}</h3>
+                            {% if movie.poster_path %}
+                                <br>
+                                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} poster">
+                            {% else %}
+                                <p>No image available</p>
+                            {% endif %}
+                        </li>
+                        <br>
+                    {% endfor %}
+                </ul>
+        {% endif %}
+    </div>
+</body>
+</html>

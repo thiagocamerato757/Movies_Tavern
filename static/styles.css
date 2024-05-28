@@ -10,7 +10,7 @@ body {
 }
 
 .container {
-    width: 70%;
+    width: 60%;
     margin: 0 auto;
     padding: 20px;
     display: flex;
@@ -90,12 +90,13 @@ nav ul li a:hover {
 .filme-container {
     margin-top: 10px;
     padding-bottom: 20px;
-    padding-left: 8%;
+    padding-left: 12.5%;
 }
 
 .filme-section {
     margin-top: 50px;
-    margin-left: 50px;
+    justify-content: center;
+    align-items: center;
 }
 
 .titulo-lista {
@@ -114,8 +115,8 @@ nav ul li a:hover {
 
 
 .backimg {
-    width: 80%;
-    height: 480px;
+    width: 70%;
+    height: 500px;
     margin: 0 auto;
     display: flex;
     align-items: center;
@@ -123,4 +124,20 @@ nav ul li a:hover {
     position: relative;
     mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
     -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
+}
+
+
+/*tela de busca*/
+.search-section {
+    margin-top: 100px;
+    margin-left: 20px;
+}
+
+.search-section img{
+    width: 15%;
+    height: 15%;
+}
+
+ul{
+    list-style: none;
 }

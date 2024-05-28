@@ -18,7 +18,7 @@ def search():
         movies = data.get('results', [])
     else:
         movies = []
-    return render_template('index.html', movies=movies)
+    return render_template('search.html', movies=movies)
 
 if __name__ == '__main__':
     app.run(debug='True',port=8001)
