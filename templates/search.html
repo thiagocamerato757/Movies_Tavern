@@ -10,7 +10,6 @@
 <body>
     <header>
         <div class="container">
-
             <h1 id="logo">Movies Tavern</h1>
             <nav>
                 <ul>
@@ -25,28 +24,26 @@
                     <img src="static/pesquisa-de-lupa.png" alt="Lupa" class="icone-lupa">
                 </button>
             </form>
-            
         </div>
     </header>
-<body>
+    <h2>Resultados da pesquisa:</h2><br><br>
     <div class="search-section">
         {% if movies %}
-            <h2>Resultados:</h2>
-                <br>
-                <ul>
-                    {% for movie in movies %}
-                        <li>
-                            <h3>{{ movie.title }}</h3>
-                            {% if movie.poster_path %}
-                                <br>
-                                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} poster">
-                            {% else %}
-                                <p>No image available</p>
-                            {% endif %}
-                        </li>
-                        <br>
-                    {% endfor %}
-                </ul>
+        
+            <div class="clearfix">
+                {% for movie in movies %}
+                    <div class="column">
+                        <h3>{{ movie.title }}</h3>
+                        {% if movie.poster_path %}
+                            <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} poster">
+                        {% else %}
+                            <p>Imagem indisponível</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+        <p>Não foram encontrados resultados para essa pesquisa</p>
         {% endif %}
     </div>
 </body>

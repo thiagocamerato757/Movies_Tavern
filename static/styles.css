@@ -128,16 +128,40 @@ nav ul li a:hover {
 
 
 /*tela de busca*/
+
 .search-section {
-    margin-top: 100px;
-    margin-left: 20px;
+    margin-top: 40px;
+    text-align: center;
+
+    img{
+        width: 45%;
+        height: 45%;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
 }
 
-.search-section img{
-    width: 15%;
-    height: 15%;
+.column {
+    display: inline-block;
+    margin: 0 20px 20px 0;
+    vertical-align: top;
+    width: calc(25% - 20px);
+    box-sizing: border-box;
 }
 
-ul{
-    list-style: none;
+.column:last-child{
+    margin-right: 0;
+}
+
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+h2{
+    margin-top: 120px;
+    margin-left: 100px;
+    font-size: 22px;
 }
