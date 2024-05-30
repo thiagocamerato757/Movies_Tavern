@@ -33,7 +33,7 @@
             <div class="clearfix">
                 {% for movie in movies %}
                     <div class="column">
-                        <h3>{{ movie.title }}</h3>
+                        <h3><a href="{{ url_for('movie_detail', movie_id=movie.id) }}">{{ movie.title }}</a></h3>
                         {% if movie.poster_path %}
                             <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} poster">
                         {% else %}

@@ -1,0 +1,81 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+}
+
+.movie-details {
+    display: flex;
+    align-items: flex-start;
+}
+
+img {
+    max-width: 300px;
+    height: auto;
+    margin-right: 20px;
+}
+
+.movie-info {
+    max-width: 600px;
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+.avaliacao-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.avaliacao {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.star-icon {
+    list-style-type: none;
+    border: 1px solid #fff;
+    cursor: pointer;
+    color: #ffe500;
+    font-size: 2em;  /* Aumentar o tamanho das estrelas */
+    margin-right: 5px;
+}
+
+.star-icon::before {
+    content: "\2605";
+}
+
+.star-icon.ativo ~ .star-icon::before {
+    content: "\2606";
+}
+
+.avaliacao:hover .star-icon::before {
+    content: "\2605";
+}
+
+.star-icon:hover ~ .star-icon::before {
+    content: "\2606";
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: #fff;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}

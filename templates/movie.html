@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ movie.title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Starstyle.css') }}">
+</head>
+<body>
+    <h1>{{ movie.title }}</h1>
+    <p>{{ movie.overview }}</p>
+    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
+    <ul class="avaliacao">
+        <li class="star-icon ativo" data-avaliacao="1"></li>
+        <li class="star-icon" data-avaliacao="2"></li>
+        <li class="star-icon" data-avaliacao="3"></li>
+        <li class="star-icon" data-avaliacao="4"></li>
+        <li class="star-icon" data-avaliacao="5"></li>
+    </ul>
+    <script src="{{ url_for('static', filename='rating.js') }}"></script>
+</body>
+</html>
