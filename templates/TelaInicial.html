@@ -29,34 +29,19 @@
         </div>
     </header>
     <img class="backimg" src="static/tavern.jpg">
-    
     <div class="filme-section">
         <h2 class="titulo-lista">Filmes em destaque</h2>
         <div class="filme-container">
-            <div class="filme-item">
-                <div class="retangulo"></div>
-                <h3 class="filme-titulo">Título 1</h3>
-            </div>
-            <div class="filme-item">
-                <div class="retangulo"></div>
-                <h3 class="filme-titulo">Título 2</h3>
-            </div>
-            <div class="filme-item">
-                <div class="retangulo"></div>
-                <h3 class="filme-titulo">Título 3</h3>
-            </div>
-            <div class="filme-item">
-                <div class="retangulo"></div>
-                <h3 class="filme-titulo">Título 4</h3>
-            </div>
-            <div class="filme-item">
-                <div class="retangulo"></div>
-                <h3 class="filme-titulo">Título 5</h3>
-            </div>
-            <div class="filme-item">
-                <div class="retangulo"></div>
-                <h3 class="filme-titulo">Título 6</h3>
-            </div>
+            {% for movie in featured_movies %}
+                <div class="filme-item">
+                    <div class="retangulo">
+                        {% if movie.poster_path %}
+                            <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} poster" class="retangulo">
+                        {% endif %}
+                    </div>
+                    <h3 class="filme-titulo">{{ movie.title }}</h3>
+                </div>
+            {% endfor %}
         </div>
     </div>
 </body>

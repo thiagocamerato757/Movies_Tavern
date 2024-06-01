@@ -82,30 +82,45 @@ nav ul li a:hover {
 .retangulo {
     width: 200px;
     height: 300px;
-    background-color: #333;
     border-radius: 5px;
     margin: 10px;
+    overflow: hidden; /* Garante que a imagem fique dentro do retângulo */
+}
+
+.retangulo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+}
+
+.filme-section {
+    margin-top: 50px;
+    text-align: center;
 }
 
 .filme-container {
     margin-top: 10px;
     padding-bottom: 20px;
     padding-left: 12.5%;
-}
-
-.filme-section {
-    margin-top: 50px;
+    display: flex;
     justify-content: center;
-    align-items: center;
+    flex-wrap: wrap; /* Permite que os itens quebrem em várias linhas se necessário */
 }
 
-.titulo-lista {
-    text-align: center;
+.filme-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 14px;
+    margin-bottom: 20px; /* Garante espaço entre as linhas de filmes */
 }
 
 .filme-titulo {
     color: white;
     text-align: center;
+    max-width: 200px; /* Define a largura máxima do título para ser igual à largura do pôster */
+    word-wrap: break-word; /* Garante que o título irá quebrar para uma nova linha se necessário */
+    margin-top: 10px; /* Adicionado para garantir espaço entre a imagem e o título */
 }
 
 .filme-item {
@@ -124,4 +139,44 @@ nav ul li a:hover {
     position: relative;
     mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
     -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
+}
+
+
+/*tela de busca*/
+
+.search-section {
+    margin-top: 40px;
+    text-align: center;
+
+    img{
+        width: 45%;
+        height: 45%;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+}
+
+.column {
+    display: inline-block;
+    margin: 0 20px 20px 0;
+    vertical-align: top;
+    width: calc(25% - 20px);
+    box-sizing: border-box;
+}
+
+.column:last-child{
+    margin-right: 0;
+}
+
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+h2{
+    margin-top: 120px;
+    margin-left: 100px;
+    font-size: 22px;
 }
