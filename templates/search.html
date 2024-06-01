@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Movies Tavern</title>
-    <link rel="stylesheet" href="static/styles.css">
+    <link rel="stylesheet" href="static/buscastyle.css">
 </head>
 <body>
     <header>
@@ -29,19 +29,24 @@
     <h2>Resultados da pesquisa:</h2><br><br>
     <div class="search-section">
         {% if movies %}
-        
-            <div class="clearfix">
                 {% for movie in movies %}
                     <div class="column">
                         <h3><a href="{{ url_for('movie_detail', movie_id=movie.id) }}">{{ movie.title }}</a></h3>
                         {% if movie.poster_path %}
-                            <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} poster">
+                            <form action="{{ url_for('movie_detail', movie_id=movie.id) }}">
+                                <button type="submit" class="image_botao">
+                                        <img  class="image_movie" src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} poster">
+                                </button>
+                            </form>
                         {% else %}
-                            <p>Imagem indisponível</p>
+                            <form action="{{ url_for('movie_detail', movie_id=movie.id) }}">
+                                <button type="submit" class="image_botao">
+                                    <img  class="image_movie" src="static/no_image.jpg" alt="{{ movie.title }} poster">
+                                </button>
+                            </form>
                         {% endif %}
                     </div>
                 {% endfor %}
-            </div>
         {% else %}
         <p>Não foram encontrados resultados para essa pesquisa</p>
         {% endif %}
