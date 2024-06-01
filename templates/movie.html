@@ -6,16 +6,48 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='Starstyle.css') }}">
 </head>
 <body>
-    <h1>{{ movie.title }}</h1>
-    <p>{{ movie.overview }}</p>
-    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
-    <ul class="avaliacao">
-        <li class="star-icon ativo" data-avaliacao="1"></li>
-        <li class="star-icon" data-avaliacao="2"></li>
-        <li class="star-icon" data-avaliacao="3"></li>
-        <li class="star-icon" data-avaliacao="4"></li>
-        <li class="star-icon" data-avaliacao="5"></li>
-    </ul>
+    <header>
+        <div class="container">
+            <h1 id="logo">Movies Tavern</h1>
+            <nav>
+                <ul>
+                    <li><a href="#">Login</a></li>
+                    <li><a href="#">Criar conta</a></li>
+                    <li><a href="/">Início</a></li>
+                </ul>
+            </nav>
+            <form class="barra-pesquisa" action="/search" method="GET">
+                <input type="text" name="query" placeholder="Pesquisar..." required>
+                <button type="submit" class="botao-pesquisa">
+                    <img src="{{ url_for('static', filename='pesquisa-de-lupa.png') }}" alt="Lupa" class="icone-lupa">
+                </button>
+            </form>
+        </div>
+    </header>
+    <div class="main-content">
+        <div class="movie-details">
+            {% if movie.poster_path %}
+                <img class="imagem-filme" src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} poster">
+            {% else %}
+                <img class="imagem-filme" src="{{ url_for('static', filename='no_image.jpg') }}" alt="{{ movie.title }} poster">
+            {% endif %}
+            <div class="movie-info">
+                <h1 class="titulto-filme">{{ movie.title }}</h1>
+                <p>{{ movie.overview }}</p>
+                <ul class="avaliacao">
+                    <li class="star-icon ativo" data-avaliacao="1"></li>
+                    <li class="star-icon" data-avaliacao="2"></li>
+                    <li class="star-icon" data-avaliacao="3"></li>
+                    <li class="star-icon" data-avaliacao="4"></li>
+                    <li class="star-icon" data-avaliacao="5"></li>
+                </ul>
+            </div>
+        </div>
+        <div class="avaliacao-geral">
+            <h2>Avaliações</h2>
+            <p>{{ average_rating }} / 5</p>
+        </div>
+    </div>
     <script src="{{ url_for('static', filename='rating.js') }}"></script>
 </body>
 </html>

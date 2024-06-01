@@ -1,16 +1,91 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+* {
     margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    background-color: #333;
+    color: #fff;
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    background-color: #1c1c1c;
+}
+
+.container {
+    width: 60%;
+    margin: 0 auto;
     padding: 20px;
+    display: flex;
+    align-items: center;
+}
+
+#logo {
+    margin-right: auto;
+    font-size: 24px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+}
+
+nav ul li a:hover {
+    color: #8800ff;
+}
+
+.barra-pesquisa {
+    position: relative;
+    display: inline-block;
+}
+
+.barra-pesquisa input[type="text"] {
+    padding: 8px 30px 8px 8px;
+    border: none;
+    border-radius: 4px;
+}
+
+.barra-pesquisa .botao-pesquisa {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.barra-pesquisa .icone-lupa {
+    width: 20px;
+    height: auto;
+}
+
+.main-content {
+    display: flex;
+    padding: 100px;
 }
 
 .movie-details {
     display: flex;
     align-items: flex-start;
+    flex-grow: 1;
+    margin-right: 20px;
 }
 
-img {
+.imagem-filme {
     max-width: 300px;
     height: auto;
     margin-right: 20px;
@@ -20,7 +95,21 @@ img {
     max-width: 600px;
 }
 
-h1 {
+.avaliacao-geral {
+    background-color: #1c1c1c;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 200px;
+    flex-shrink: 0;
+    align-self: flex-start; /* Adjust this line */
+}
+
+.avaliacao-geral h2 {
+    margin-bottom: 10px;
+}
+
+.titulto-filme {
     font-size: 2em;
     margin-bottom: 20px;
 }
@@ -38,15 +127,14 @@ p {
 
 .avaliacao {
     display: flex;
-    margin-bottom: 10px;
+    padding-left: 0;
 }
 
 .star-icon {
     list-style-type: none;
-    border: 1px solid #fff;
     cursor: pointer;
     color: #ffe500;
-    font-size: 2em;  /* Aumentar o tamanho das estrelas */
+    font-size: 2em;
     margin-right: 5px;
 }
 
@@ -66,7 +154,7 @@ p {
     content: "\2606";
 }
 
-button {
+/* button {
     padding: 10px 20px;
     font-size: 1em;
     color: #fff;
@@ -78,4 +166,4 @@ button {
 
 button:hover {
     background-color: #0056b3;
-}
+} */
