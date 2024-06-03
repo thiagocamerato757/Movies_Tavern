@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 import requests
 
 app = Flask(__name__)
-file = "api.config"
+file = ".config"
 contents = open(file, "r").read()
 config = eval(contents) 
 
