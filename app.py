@@ -2,9 +2,12 @@ from flask import Flask, render_template, request
 import requests
 
 app = Flask(__name__)
+file = "api.config"
+contents = open(file, "r").read()
+config = eval(contents) 
 
-# Sua chave de API do TMDb
-API_KEY = 'b1caf5476a4a9ee94eb6aa3741ee91b4'
+API_KEY = config['API_KEY']
+
 
 def get_featured_movies():
     """
