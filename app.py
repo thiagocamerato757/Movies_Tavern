@@ -22,7 +22,8 @@ def get_featured_movies():
     for movie in results:
         movie_data = {
             'title': movie.get('title'), # Título do filme
-            'poster_path': movie.get('poster_path') # Caminho do pôster do filme
+            'poster_path': movie.get('poster_path'), # Caminho do pôster do filme
+            'id': movie.get('id')
         }
         movies.append(movie_data) # Adiciona o filme à lista de filmes
     return movies

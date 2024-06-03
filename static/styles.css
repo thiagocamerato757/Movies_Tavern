@@ -49,8 +49,6 @@ nav ul li a:hover {
     color: #8800ff;
 }
 
-
-
 .barra-pesquisa {
     position: relative;
     display: inline-block;
@@ -115,6 +113,7 @@ nav ul li a:hover {
     max-width: 220px; /* Define a largura máxima do título para ser igual à largura do pôster */
     word-wrap: break-word; /* Garante que o título irá quebrar para uma nova linha se necessário */
     margin-top: 10px; /* Adicionado para garantir espaço entre a imagem e o título */
+    text-decoration: none;
 }
 
 
@@ -136,3 +135,4 @@ nav ul li a:hover {
     border: none;
     background: transparent;
 }
+

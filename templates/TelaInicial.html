@@ -36,10 +36,14 @@
                 <div class="filme-item">
                     <div class="retangulo">
                         {% if movie.poster_path %}
-                            <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} poster" class="retangulo">
+                            <form action="{{ url_for('movie_detail', movie_id=movie.id) }}">
+                                <button type="submit" class="image_botao">
+                                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} poster" class="retangulo">
+                                </button>
+                            </form>
                         {% endif %}
                     </div>
-                    <h3 class="filme-titulo">{{ movie.title }}</h3>
+                    <h3><a class="filme-titulo" href="{{ url_for('movie_detail', movie_id=movie.id) }}">{{ movie.title }}</a></h3>
                 </div>
             {% endfor %}
         </div>
