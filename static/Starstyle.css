@@ -76,6 +76,7 @@ nav ul li a:hover {
 .main-content {
     display: flex;
     padding: 100px;
+    padding-right: 390px;
 }
 
 .movie-details {
@@ -102,7 +103,7 @@ nav ul li a:hover {
     text-align: center;
     max-width: 200px;
     flex-shrink: 0;
-    align-self: flex-start; /* Adjust this line */
+    align-self: flex-start; 
 }
 
 .avaliacao-geral h2 {
