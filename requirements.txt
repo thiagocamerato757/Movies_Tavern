@@ -1,5 +1,6 @@
 Flask
 Flask-Cors
+Flask-Testing
 flask-openapi3
 Flask-SQLAlchemy
 nose2

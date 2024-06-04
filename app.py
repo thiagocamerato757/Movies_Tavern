@@ -2,12 +2,14 @@ from flask import Flask, render_template, request
 import requests
 
 app = Flask(__name__)
-file = ".config"
-contents = open(file, "r").read()
-config = eval(contents) 
 
-API_KEY = config['API_KEY']
-
+if not app.config.get('TESTING', False):
+    file = ".config"
+    contents = open(file, "r").read()
+    config = eval(contents)
+    API_KEY = config['API_KEY']
+else:
+    API_KEY = "test_api_key"  # Use uma chave de API de teste durante os testes
 
 def get_featured_movies():
     """
