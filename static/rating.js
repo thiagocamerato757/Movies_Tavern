@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var avaliacao = document.querySelector('.avaliacao');
     var submitButton = document.getElementById('submit-rating');
     var stars = document.querySelectorAll('.star-icon');
+    var rating = 0;
 
     btnAvaliar.addEventListener('click', function() {
         if (btnAvaliar.textContent === 'Excluir') {
@@ -12,14 +13,12 @@ document.addEventListener('DOMContentLoaded', function() {
             avaliacao.classList.remove('avaliacao-enviada');
             btnAvaliar.textContent = 'Avaliar';
             avaliacao.classList.add('desabilitada');
-        }
-        else{
+        } else {
             avaliacao.classList.remove('desabilitada');
             stars.forEach(star => {
                 star.style.pointerEvents = 'auto';
             });
         }
-        
     });
 
     stars.forEach(star => {
@@ -30,11 +29,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitButton.style.display = 'block';
             }
         });
+
+        star.addEventListener('mouseover', function() {
+            if (!avaliacao.classList.contains('avaliacao-enviada')) {
+                var hoverRating = parseInt(star.getAttribute('data-avaliacao'));
+                paintStars(hoverRating);
+            }
+        });
+
+        star.addEventListener('mouseout', function() {
+            if (!avaliacao.classList.contains('avaliacao-enviada')) {
+                paintStars(rating);
+            }
+        });
     });
 
     submitButton.addEventListener('click', function() {
-        var activeStars = document.querySelectorAll('.star-icon.ativo');
-        if (activeStars.length > 0) {
+        if (rating > 0) {
             avaliacao.classList.add('avaliacao-enviada');
             submitButton.style.display = 'none';
             btnAvaliar.textContent = 'Excluir';

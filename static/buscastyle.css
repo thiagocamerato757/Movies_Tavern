@@ -81,36 +81,27 @@ nav ul li a:hover {
     text-align: center;
 }
 
-.image_movie{
-    width: 45%;
-    height: 45%;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease;
-    cursor:pointer;
-}
-
-.image_movie:hover{
-    transform: scale(1.05); 
-}
-
-.no_image_movie{
-    width: 60%;
-    height: 100%;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease;
-    cursor:pointer;
-}
-
-.no_image_movie:hover{
-    transform: scale(1.05); 
-}
-
-.image_botao{
+.image_botao {
     border: none;
-    background:transparent;
-    
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image_movie, .no_image_movie {
+    display: block;
+    width: 70%;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    justify-content: center;
+}
+
+.image_movie:hover, .no_image_movie:hover {
+    transform: scale(1.05);
 }
 
 .column {
@@ -131,4 +122,28 @@ a {
     text-decoration: none;
     color: #fff;
     font-size: 18px;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    color: #fff;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    margin: 0 2px;
+}
+
+.pagination a.active {
+    background-color: #C5A647;
+    color: white;
+    border-radius: 5px;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #575757;
+    border-radius: 5px;
 }

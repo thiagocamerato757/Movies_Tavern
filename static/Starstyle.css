@@ -160,20 +160,12 @@ p {
     content: "\2606";
 }
 
-.star-icon.ativo::before {
+.star-icon.ativo::before,
+.star-icon.hover::before {
     content: "\2605";
 }
 
-.avaliacao:not(.desabilitada) .star-icon:hover::before {
-    content: "\2605";
-}
-
-
-.star-icon:hover::before {
-    content: "\2605";
-}
-
-#btn-avaliar {
+#btn-avaliar, #submit-rating {
     padding: 10px 20px;
     font-size: 1em;
     color: #fff;
@@ -181,7 +173,23 @@ p {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.3s;
+    margin-top: 10px;
+    width: 150px;
+    text-align: center;
+}
+
+#btn-avaliar:hover, #submit-rating:hover {
+    background-color: #575757;
+    transform: scale(1.05);
+}
+
+#btn-avaliar:active, #submit-rating:active {
+    transform: scale(0.95);
+}
+
+#submit-rating{
+    margin-top: 10px;
 }
 
 .avaliacao-enviada .star-icon {

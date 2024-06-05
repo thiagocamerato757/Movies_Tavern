@@ -125,7 +125,7 @@ nav ul li a:hover {
 }
 
 .backimg {
-    width: 70%;
+    width: 1000px;
     height: 500px;
     margin: 0 auto;
     display: flex;
@@ -135,7 +135,6 @@ nav ul li a:hover {
     mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
     -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
 }
-
 
 .image_botao{
     cursor: pointer;

@@ -26,7 +26,7 @@
             </form>
         </div>
     </header>
-    <h2>Resultados da pesquisa:</h2><br><br>
+    <h2>Resultados para '{{query}}':</h2><br><br>
     <div class="search-section">
         {% if movies %}
                 {% for movie in movies %}
@@ -47,8 +47,19 @@
                         {% endif %}
                     </div>
                 {% endfor %}
+                <div class="pagination">
+                    {% if page > 1 %}
+                        <a href="{{ url_for('search', query=query, page=page-1) }}">Anterior</a>
+                    {% endif %}
+                    {% for p in range(1, total_pages + 1) %}
+                        <a href="{{ url_for('search', query=query, page=p) }}" class="{{ 'active' if p == page else '' }}">{{ p }}</a>
+                    {% endfor %}
+                    {% if page < total_pages %}
+                        <a href="{{ url_for('search', query=query, page=page+1) }}">Próxima</a>
+                    {% endif %}
+                </div>
         {% else %}
-        <p>Não foram encontrados resultados para essa pesquisa</p>
+            <p>Não foram encontrados resultados para essa pesquisa</p>
         {% endif %}
     </div>
 </body>

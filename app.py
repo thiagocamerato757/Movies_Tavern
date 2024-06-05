@@ -56,15 +56,20 @@ def search():
         Template HTML: A página de resultados da busca com a lista de filmes correspondentes.
     """
     query = request.args.get('query') # Obtém o termo de busca da URL
+    page = request.args.get('page', 1, type=int) 
     if query:
         # Faz uma requisição GET à API do TMDb para buscar filmes
-        url = f'https://api.themoviedb.org/3/search/movie?api_key={API_KEY}&query={query}'
+        url = f'https://api.themoviedb.org/3/search/movie?api_key={API_KEY}&query={query}&page={page}'
         response = requests.get(url)
         data = response.json() # Converte a resposta em JSON
         movies = data.get('results', []) # Obtém a lista de resultados
+        total_pages = data.get('total_pages', 1) 
     else:
         movies = [] # Se não houver termo de busca, a lista de filmes é vazia
-    return render_template('search.html', movies=movies)
+        total_pages = 1
+    return render_template('search.html', movies=movies,query=query, page=page, total_pages=total_pages)
+
+
 
 @app.route('/movie/<int:movie_id>')
 def movie_detail(movie_id):
