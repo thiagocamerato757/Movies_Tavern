@@ -34,13 +34,18 @@
             <div class="movie-info">
                 <h1 class="titulto-filme">{{ movie.title }}</h1>
                 <p>{{ movie.overview }}</p>
-                <ul class="avaliacao">
-                    <li class="star-icon ativo" data-avaliacao="1"></li>
-                    <li class="star-icon" data-avaliacao="2"></li>
-                    <li class="star-icon" data-avaliacao="3"></li>
-                    <li class="star-icon" data-avaliacao="4"></li>
-                    <li class="star-icon" data-avaliacao="5"></li>
-                </ul>
+                <br><br><br>
+                <div class="avaliacao-container">
+                    <button id="btn-avaliar">Avaliar</button>
+                    <ul class="avaliacao desabilitada">
+                        <li class="star-icon" data-avaliacao="1"></li>
+                        <li class="star-icon" data-avaliacao="2"></li>
+                        <li class="star-icon" data-avaliacao="3"></li>
+                        <li class="star-icon" data-avaliacao="4"></li>
+                        <li class="star-icon" data-avaliacao="5"></li>
+                    </ul>
+                    <button id="submit-rating" style="display: none;">Enviar Avaliação</button>
+                </div>
             </div>
         </div>
         <div class="avaliacao-geral">

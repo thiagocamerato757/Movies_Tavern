@@ -131,6 +131,11 @@ p {
     padding-left: 0;
 }
 
+.avaliacao.desabilitada .star-icon {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
 .star-icon {
     list-style-type: none;
     cursor: pointer;
@@ -140,31 +145,34 @@ p {
 }
 
 .star-icon::before {
-    content: "\2605";
-}
-
-.star-icon.ativo ~ .star-icon::before {
     content: "\2606";
 }
 
-.avaliacao:hover .star-icon::before {
+.star-icon.ativo::before {
     content: "\2605";
 }
 
-.star-icon:hover ~ .star-icon::before {
-    content: "\2606";
+.avaliacao:not(.desabilitada) .star-icon:hover::before {
+    content: "\2605";
 }
 
-/* button {
+
+.star-icon:hover::before {
+    content: "\2605";
+}
+
+button {
     padding: 10px 20px;
     font-size: 1em;
     color: #fff;
-    background-color: #007BFF;
+    background-color: #1c1c1c;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
-button:hover {
-    background-color: #0056b3;
-} */
+.avaliacao-enviada .star-icon {
+    pointer-events: none;
+    color: #c4c4c4;
+    cursor: default;
+}
