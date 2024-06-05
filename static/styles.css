@@ -43,10 +43,11 @@ nav ul li a {
     text-decoration: none;
     color: #fff;
     font-size: 18px;
+    transition: color 0.3s;
 }
 
 nav ul li a:hover {
-    color: #8800ff;
+    color: #C5A647;
 }
 
 .barra-pesquisa {
@@ -79,12 +80,19 @@ nav ul li a:hover {
     border-radius: 5px;
     margin: 10px;
     overflow: hidden; /* Garante que a imagem fique dentro do retângulo */
+    transition: transform 0.3s ease;
 }
 
 .retangulo img {
     width: 200px;
     height: 300px;
-    object-fit: cover; 
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.retangulo:hover {
+    transform: scale(1.05); /* Aumenta o tamanho do retângulo quando o mouse está sobre ele */
 }
 
 .filme-section {
@@ -105,17 +113,16 @@ nav ul li a:hover {
     flex-direction: column;
     align-items: center;
     margin: 14px;
+    max-width: 220px;
 }
 
 .filme-titulo {
     color: white;
     text-align: center;
-    max-width: 220px; /* Define a largura máxima do título para ser igual à largura do pôster */
     word-wrap: break-word; /* Garante que o título irá quebrar para uma nova linha se necessário */
     margin-top: 10px; /* Adicionado para garantir espaço entre a imagem e o título */
     text-decoration: none;
 }
-
 
 .backimg {
     width: 70%;

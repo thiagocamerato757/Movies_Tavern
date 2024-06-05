@@ -26,15 +26,12 @@
     </header>
     <div class="main-content">
         <div class="movie-details">
-            {% if movie.poster_path %}
-                <img class="imagem-filme" src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} poster">
-            {% else %}
-                <img class="imagem-filme" src="{{ url_for('static', filename='no_image.jpg') }}" alt="{{ movie.title }} poster">
-            {% endif %}
-            <div class="movie-info">
-                <h1 class="titulto-filme">{{ movie.title }}</h1>
-                <p>{{ movie.overview }}</p>
-                <br><br><br>
+            <div class="imagem-filme-container">
+                {% if movie.poster_path %}
+                    <img class="imagem-filme" src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} poster">
+                {% else %}
+                    <img class="imagem-filme" src="{{ url_for('static', filename='no_image.jpg') }}" alt="{{ movie.title }} poster">
+                {% endif %}
                 <div class="avaliacao-container">
                     <button id="btn-avaliar">Avaliar</button>
                     <ul class="avaliacao desabilitada">
@@ -47,11 +44,17 @@
                     <button id="submit-rating" style="display: none;">Enviar Avaliação</button>
                 </div>
             </div>
+            <div class="movie-info">
+                <h1 class="titulto-filme">{{ movie.title }}</h1>
+                <p>{{ movie.overview }}</p>
+                <br><br><br>
+            </div>
         </div>
         <div class="avaliacao-geral">
             <h2>Avaliações</h2>
             <p>{{ average_rating }} / 5</p>
         </div>
+        
     </div>
     <script src="{{ url_for('static', filename='rating.js') }}"></script>
 </body>

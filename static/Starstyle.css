@@ -41,10 +41,11 @@ nav ul li a {
     text-decoration: none;
     color: #fff;
     font-size: 18px;
+    transition: color 0.3s;
 }
 
 nav ul li a:hover {
-    color: #8800ff;
+    color: #C5A647;
 }
 
 .barra-pesquisa {
@@ -75,8 +76,8 @@ nav ul li a:hover {
 
 .main-content {
     display: flex;
-    padding: 100px;
-    padding-right: 390px;
+    padding: 80px;
+    justify-content: space-between;
 }
 
 .movie-details {
@@ -90,6 +91,9 @@ nav ul li a:hover {
     max-width: 300px;
     height: auto;
     margin-right: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .movie-info {
@@ -103,7 +107,8 @@ nav ul li a:hover {
     text-align: center;
     max-width: 200px;
     flex-shrink: 0;
-    align-self: flex-start; 
+    align-self: flex-start;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .avaliacao-geral h2 {
@@ -111,7 +116,7 @@ nav ul li a:hover {
 }
 
 .titulto-filme {
-    font-size: 2em;
+    font-size: 2.5em;
     margin-bottom: 20px;
 }
 
@@ -120,10 +125,17 @@ p {
     margin-bottom: 20px;
 }
 
-.avaliacao-container {
+.imagem-filme-container {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+}
+
+.avaliacao-container {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .avaliacao {
@@ -141,7 +153,7 @@ p {
     cursor: pointer;
     color: #ffe500;
     font-size: 2em;
-    margin-right: 5px;
+    transition: color 0.3s;
 }
 
 .star-icon::before {
@@ -161,7 +173,7 @@ p {
     content: "\2605";
 }
 
-button {
+#btn-avaliar {
     padding: 10px 20px;
     font-size: 1em;
     color: #fff;
@@ -169,10 +181,12 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .avaliacao-enviada .star-icon {
     pointer-events: none;
-    color: #c4c4c4;
+    color: #ffe500;
     cursor: default;
+    opacity: 0.8;
 }

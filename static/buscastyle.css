@@ -43,10 +43,11 @@ nav ul li a {
     text-decoration: none;
     color: #fff;
     font-size: 18px;
+    transition: color 0.3s;
 }
 
 nav ul li a:hover {
-    color: #8800ff;
+    color: #C5A647;
 }
 
 .barra-pesquisa {
@@ -84,13 +85,32 @@ nav ul li a:hover {
     width: 45%;
     height: 45%;
     border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    cursor:pointer;
+}
+
+.image_movie:hover{
+    transform: scale(1.05); 
+}
+
+.no_image_movie{
+    width: 60%;
+    height: 100%;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    cursor:pointer;
+}
+
+.no_image_movie:hover{
+    transform: scale(1.05); 
 }
 
 .image_botao{
-    cursor: pointer;
     border: none;
-    background: transparent;
+    background:transparent;
+    
 }
 
 .column {
