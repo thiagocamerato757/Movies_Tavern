@@ -1,3 +1,47 @@
+import os
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, PrimaryKeyConstraint
+from sqlalchemy.ext.declarative import declarative_base
+
+# Caminho do arquivo do banco de dados
+DATABASE_PATH = 'dataBase.db'
+
+def create_database():
+    """
+    Cria o banco de dados SQLite com as tabelas necessárias.
+    """
+    engine = create_engine(f'sqlite:///{DATABASE_PATH}', echo=True)
+    Base = declarative_base()
+
+    # Definição da tabela users
+    class User(Base):
+        __tablename__ = 'users'
+        
+        UserName = Column(String(50), primary_key=True, nullable=False)
+        Passworld = Column(String(80), nullable=False)
+        Class = Column(String(50), nullable=False)
+
+    # Definição da tabela avaliacoes
+    class Avaliacao(Base):
+        __tablename__ = 'avaliacoes'
+        
+        id_filme = Column(Integer, nullable=False)
+        UserName = Column(String(50), ForeignKey('users.UserName'), nullable=False)
+        stars = Column(Integer, nullable=False)
+        comentario = Column(String(1000), nullable=True)
+        
+        __table_args__ = (
+            PrimaryKeyConstraint('id_filme', 'UserName'),
+        )
+
+    # Criação das tabelas no banco de dados
+    Base.metadata.create_all(engine)
+    print("Banco de dados criado com sucesso!")
+
+# Verifica se o arquivo do banco de dados existe, caso contrário, cria-o
+if not os.path.exists(DATABASE_PATH):
+    create_database()
+
+# Resto do código Flask
 from flask import Flask, render_template, request
 import requests
 import re
@@ -43,7 +87,7 @@ def home():
         Template HTML: A página inicial com filmes populares.
     """
     featured_movies = get_featured_movies()
-    return render_template('TelaInicial.html',featured_movies=featured_movies)
+    return render_template('TelaInicial.html', featured_movies=featured_movies)
 
 @app.route('/search', methods=['GET'])
 def search():
@@ -69,7 +113,7 @@ def search():
     else:
         movies = [] # Se não houver termo de busca, a lista de filmes é vazia
         total_pages = 1
-    return render_template('search.html', movies=sorted_movies,query=query, page=page, total_pages=total_pages)
+    return render_template('search.html', movies=sorted_movies, query=query, page=page, total_pages=total_pages)
 
 @app.route('/movie/<int:movie_id>')
 def movie_detail(movie_id):
@@ -111,4 +155,3 @@ def utility_processor():
 
 if __name__ == '__main__':
     app.run(debug=True, port=8001) # Executa o aplicativo Flask no modo debug
-
