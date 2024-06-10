@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -10,22 +9,22 @@
 <body>
     <header>
         <div class="container">
-
-            <h1 id="logo">Movies Tavern</h1>
-            <nav>
-                <ul>
-                    <li><a href="#">Login</a></li>
-                    <li><a href="#">Criar conta</a></li>
-                    <li><a href="/">Início</a></li>
-                </ul>
-            </nav>
-            <form class="barra-pesquisa" action="/search" method="GET">
-                <input type="text" name="query" placeholder="Pesquisar..." required>
-                <button type="submit" class="botao-pesquisa">
-                    <img src="static/pesquisa-de-lupa.png" alt="Lupa" class="icone-lupa">
-                </button>
-            </form>
-            
+            <a href="/"><button id="logo" class="botao_logo">Movies Tavern</button></a>
+            <div class="nav-search-container">
+                <nav>
+                    <ul>
+                        <li><a href="#">Login</a></li>
+                        <li><a href="#">Criar conta</a></li>
+                        <li><a href="/">Início</a></li>
+                    </ul>
+                </nav>
+                <form class="barra-pesquisa" action="/search" method="GET">
+                    <input type="text" name="query" placeholder="Pesquisar..." required>
+                    <button type="submit" class="botao-pesquisa">
+                        <img src="static/pesquisa-de-lupa.png" alt="Lupa" class="icone-lupa">
+                    </button>
+                </form>
+            </div>
         </div>
     </header>
     <img class="backimg" src="static/tavern.jpg">

@@ -5,14 +5,8 @@
 
 body {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    background-color: #333;
-    color: #fff;
-}
-
-header {
-    display: flex;
-    justify-content: center;
     background-color: #1c1c1c;
+    color: #fff;
 }
 
 .container {
@@ -20,23 +14,35 @@ header {
     margin: 0 auto;
     padding: 20px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
+    position: absolute;
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 #logo {
-    margin-right: auto;
-    font-size: 24px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 22px;
+}
+
+.nav-search-container {
+    display: flex;
+    align-items: center;
 }
 
 nav ul {
     list-style: none;
     display: flex;
-    
+    margin: 0;
 }
 
 nav ul li {
     margin-right: 20px;
-    
 }
 
 nav ul li a {
@@ -50,9 +56,17 @@ nav ul li a:hover {
     color: #C5A647;
 }
 
+.botao_logo {
+    background-color: transparent;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
 .barra-pesquisa {
     position: relative;
     display: inline-block;
+    margin-left: 20px;
 }
 
 .barra-pesquisa input[type="text"] {

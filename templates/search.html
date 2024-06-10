@@ -10,20 +10,22 @@
 <body>
     <header>
         <div class="container">
-            <h1 id="logo">Movies Tavern</h1>
-            <nav>
-                <ul>
-                    <li><a href="#">Login</a></li>
-                    <li><a href="#">Criar conta</a></li>
-                    <li><a href="/">Início</a></li>
-                </ul>
-            </nav>
-            <form class="barra-pesquisa" action="/search" method="GET">
-                <input type="text" name="query" placeholder="Pesquisar..." required>
-                <button type="submit" class="botao-pesquisa">
-                    <img src="static/pesquisa-de-lupa.png" alt="Lupa" class="icone-lupa">
-                </button>
-            </form>
+            <a href="/"><button id="logo" class="botao_logo">Movies Tavern</button></a>
+            <div class="nav-search-container">
+                <nav>
+                    <ul>
+                        <li><a href="#">Login</a></li>
+                        <li><a href="#">Criar conta</a></li>
+                        <li><a href="/">Início</a></li>
+                    </ul>
+                </nav>
+                <form class="barra-pesquisa" action="/search" method="GET">
+                    <input type="text" name="query" placeholder="Pesquisar..." required>
+                    <button type="submit" class="botao-pesquisa">
+                        <img src="static/pesquisa-de-lupa.png" alt="Lupa" class="icone-lupa">
+                    </button>
+                </form>
+            </div>
         </div>
     </header>
     <h2>Resultados para '{{query}}':</h2><br><br>
@@ -51,9 +53,15 @@
                     {% if page > 1 %}
                         <a href="{{ url_for('search', query=query, page=page-1) }}">Anterior</a>
                     {% endif %}
-                    {% for p in range(1, total_pages + 1) %}
-                        <a href="{{ url_for('search', query=query, page=p) }}" class="{{ 'active' if p == page else '' }}">{{ p }}</a>
+    
+                    {% for p in pagination_range(page, total_pages) %}
+                        {% if p %}
+                            <a href="{{ url_for('search', query=query, page=p) }}" class="{{ 'active' if p == page else '' }}">{{ p }}</a>
+                        {% else %}
+                            <span>...</span>
+                        {% endif %}
                     {% endfor %}
+    
                     {% if page < total_pages %}
                         <a href="{{ url_for('search', query=query, page=page+1) }}">Próxima</a>
                     {% endif %}
