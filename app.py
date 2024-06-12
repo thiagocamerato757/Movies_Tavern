@@ -1,6 +1,9 @@
 import os
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, PrimaryKeyConstraint
 from sqlalchemy.ext.declarative import declarative_base
+from flask import Flask, render_template, request
+import requests
+import re
 
 # Caminho do arquivo do banco de dados
 DATABASE_PATH = 'dataBase.db'
@@ -41,10 +44,6 @@ def create_database():
 if not os.path.exists(DATABASE_PATH):
     create_database()
 
-# Resto do código Flask
-from flask import Flask, render_template, request
-import requests
-import re
 
 app = Flask(__name__)
 
@@ -127,10 +126,17 @@ def movie_detail(movie_id):
         Template HTML: A página de detalhes do filme.
     """
     # Faz uma requisição GET à API do TMDb para obter detalhes do filme
-    url = f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={API_KEY}'
-    response = requests.get(url)
-    movie = response.json() # Converte a resposta em JSON
-    return render_template('movie.html', movie=movie) # Renderiza o template com os detalhes do filme
+    movie_url = f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={API_KEY}'
+    movie_response = requests.get(movie_url)
+    movie = movie_response.json() # Converte a resposta em JSON
+    
+    # Faz uma requisição GET à API do TMDb para obter o elenco do filme
+    credits_url = f'https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key={API_KEY}'
+    credits_response = requests.get(credits_url)
+    credits = credits_response.json()
+    cast = credits.get('cast', [])
+    
+    return render_template('movie.html', movie=movie, cast=cast) # Renderiza o template com os detalhes do filme e do elenco
 
 def pagination_range(current_page, total_pages, delta=1):
     """

@@ -48,6 +48,12 @@
                 <h1 class="titulto-filme">{{ movie.title }}</h1>
                 <p>{{ movie.overview }}</p>
                 <br><br><br>
+                <h2>Elenco</h2>
+                <ul>
+                    {% for member in cast %}
+                        <li>{{ member.name }} como {{ member.character }}</li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
         <div class="avaliacao-geral">
