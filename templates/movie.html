@@ -8,20 +8,22 @@
 <body>
     <header>
         <div class="container">
-            <h1 id="logo">Movies Tavern</h1>
-            <nav>
-                <ul>
-                    <li><a href="#">Login</a></li>
-                    <li><a href="#">Criar conta</a></li>
-                    <li><a href="/">Início</a></li>
-                </ul>
-            </nav>
-            <form class="barra-pesquisa" action="/search" method="GET">
-                <input type="text" name="query" placeholder="Pesquisar..." required>
-                <button type="submit" class="botao-pesquisa">
-                    <img src="{{ url_for('static', filename='pesquisa-de-lupa.png') }}" alt="Lupa" class="icone-lupa">
-                </button>
-            </form>
+            <a href="/"><button id="logo" class="botao_logo">Movies Tavern</button></a>
+            <div class="nav-search-container">
+                <nav>
+                    <ul>
+                        <li><a href="/login">Login</a></li>
+                        <li><a href="#">Criar conta</a></li>
+                        <li><a href="/">Início</a></li>
+                    </ul>
+                </nav>
+                <form class="barra-pesquisa" action="/search" method="GET">
+                    <input type="text" name="query" placeholder="Pesquisar..." required>
+                    <button type="submit" class="botao-pesquisa">
+                        <img src="{{ url_for('static', filename='pesquisa-de-lupa.png') }}" alt="Lupa" class="icone-lupa">
+                    </button>
+                </form>
+            </div>
         </div>
     </header>
     <div class="main-content">
@@ -48,20 +50,28 @@
                 <h1 class="titulto-filme">{{ movie.title }}</h1>
                 <p>{{ movie.overview }}</p>
                 <br><br><br>
-                <h2>Elenco</h2>
-                <ul>
-                    {% for member in cast %}
-                        <li>{{ member.name }} como {{ member.character }}</li>
-                    {% endfor %}
-                </ul>
+                <div class="avaliacao-geral">
+                    <h2>Average rating</h2>
+                    <p>{{ average_rating }} / 5</p>
+                </div>
             </div>
         </div>
-        <div class="avaliacao-geral">
-            <h2>Avaliações</h2>
-            <p>{{ average_rating }} / 5</p>
+        <div class="elenco">
+            <h2>Cast</h2><br>
+            <ul id="cast-list">
+                {% for member in cast[:10] %}
+                    <li>{{ member.name }} - {{ member.character }}</li>
+                {% endfor %}
+            </ul>
+            {% if cast|length > 10 %}
+                <div class="button-container">
+                    <button id="show-more" onclick="showMore()">Show all</button>
+                    <button id="show-less" onclick="showLess()" style="display: none;">Show less</button>
+                </div>
+            {% endif %}
         </div>
-        
     </div>
+    <div id="full-cast-data" style="display: none;">{{ cast|tojson }}</div>
     <script src="{{ url_for('static', filename='rating.js') }}"></script>
 </body>
 </html>

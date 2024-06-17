@@ -5,8 +5,15 @@
 
 body {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    background-color: #1c1c1c;
+    background-color: #333;
     color: #fff;
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    background-color: #1c1c1c;
 }
 
 .container {
@@ -16,13 +23,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: absolute;
-}
-
-header {
-    display: flex;
-    justify-content: center;
-    width: 100%;
 }
 
 #logo {
@@ -77,8 +77,8 @@ nav ul li a:hover {
 
 .barra-pesquisa .botao-pesquisa {
     position: absolute;
-    top: 50%;
-    right: 8px;
+    top: 55%;
+    right: 3px;
     transform: translateY(-50%);
     border: none;
     background: transparent;
@@ -146,7 +146,6 @@ a {
 .pagination a {
     color: #fff;
     padding: 8px 16px;
-    text-decoration: none;
     transition: background-color 0.3s;
     margin: 0 2px;
 }

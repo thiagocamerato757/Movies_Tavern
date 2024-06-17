@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Movies Tavern</title>
+    <link rel="stylesheet" href="static/perfil.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="/"><button id="logo" class="botao_logo">Movies Tavern</button></a>
+            <div class="nav-search-container">
+                <nav>
+                    <ul>
+                        <li><a href="/login">Login</a></li>
+                        <li><a href="#">Criar conta</a></li>
+                        <li><a href="/">Início</a></li>
+                    </ul>
+                </nav>
+                <form class="barra-pesquisa" action="/search" method="GET">
+                    <input type="text" name="query" placeholder="Pesquisar..." required>
+                    <button type="submit" class="botao-pesquisa">
+                        <img src="static/pesquisa-de-lupa.png" alt="Lupa" class="icone-lupa">
+                    </button>
+                </form>
+            </div>
+        </div>
+    </header>
+    <div class='perfil'>
+        <div class="foto-perfil">
+            <img src="static/chinchilla.png" class="icone-perfil">
+        </div>
+        <div class="descricao-perfil">
+            <nav>
+                <ul class="nome-perfil">Nome de Usuário</ul> 
+                <br>
+                <ul class="classe-perfil">Classe do usuário</ul>
+            </nav>
+        </div>
+    </div>
+    <div class="filme-section">
+        <div class="titulo-section">
+            <h2 class="titulo-lista">Favorite movies</h2>
+            <p class="ver-todos">See all...</p>
+        </div>
+        <div class="filme-container">
+            <div class="filme-item">
+                <div class="retangulo"></div>
+            </div>
+            <div class="filme-item">
+                <div class="retangulo"></div>
+            </div>
+            <div class="filme-item">
+                <div class="retangulo"></div>
+            </div>
+            <div class="filme-item">
+                <div class="retangulo"></div>
+            </div>
+            <div class="filme-item">
+                <div class="retangulo"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="filme-section">
+        <div class="titulo-section">
+            <h2 class="titulo-lista">Recent reviews</h2>
+            <p class="ver-todos">See all...</p>
+        </div>
+        <div class="filme-container">
+            <div class="filme-item">
+                <div class="retangulo"></div>
+            </div>
+            <div class="filme-item">
+                <div class="retangulo"></div>
+            </div>
+            <div class="filme-item">
+                <div class="retangulo"></div>
+            </div>
+            <div class="filme-item">
+                <div class="retangulo"></div>
+            </div>
+            <div class="filme-item">
+                <div class="retangulo"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

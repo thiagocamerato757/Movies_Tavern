@@ -12,6 +12,7 @@ body {
 header {
     display: flex;
     justify-content: center;
+    width: 100%;
     background-color: #1c1c1c;
 }
 
@@ -20,17 +21,24 @@ header {
     margin: 0 auto;
     padding: 20px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
 }
 
 #logo {
-    margin-right: auto;
-    font-size: 24px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 22px;
+}
+
+.nav-search-container {
+    display: flex;
+    align-items: center;
 }
 
 nav ul {
     list-style: none;
     display: flex;
+    margin: 0;
 }
 
 nav ul li {
@@ -48,9 +56,17 @@ nav ul li a:hover {
     color: #C5A647;
 }
 
+.botao_logo {
+    background-color: transparent;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
 .barra-pesquisa {
     position: relative;
     display: inline-block;
+    margin-left: 20px;
 }
 
 .barra-pesquisa input[type="text"] {
@@ -61,8 +77,8 @@ nav ul li a:hover {
 
 .barra-pesquisa .botao-pesquisa {
     position: absolute;
-    top: 50%;
-    right: 8px;
+    top: 55%;
+    right: 3px;
     transform: translateY(-50%);
     border: none;
     background: transparent;
@@ -197,4 +213,33 @@ p {
     color: #ffe500;
     cursor: default;
     opacity: 0.8;
+}
+
+.elenco {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Ensures the content inside .elenco is aligned to the start (left) */
+}
+
+.button-container {
+    align-self: flex-end; /* Aligns the buttons to the right */
+    margin-top: 10px;
+}
+
+#show-more, #show-less {
+    padding: 5px 10px;
+    background-color: #1c1c1c;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+#show-more:hover, #show-less:hover {
+    background-color: #575757;
+    transform: scale(1.05);
+}
+
+#show-more:active, #show-less:active {
+    transform: scale(0.95);
 }

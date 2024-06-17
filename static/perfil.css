@@ -5,8 +5,15 @@
 
 body {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    background-color: #1c1c1c;
+    background-color: #333;
     color: #fff;
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    background-color: #1c1c1c;
 }
 
 .container {
@@ -16,13 +23,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: absolute;
-}
-
-header {
-    display: flex;
-    justify-content: center;
-    width: 100%;
 }
 
 #logo {
@@ -90,19 +90,47 @@ nav ul li a:hover {
     height: auto;
 }
 
-.retangulo {
-    border-radius: 5px;
-    margin: 10px;
-    overflow: hidden; /* Garante que a imagem fique dentro do retângulo */
-    transition: transform 0.3s ease;
+.perfil {
+    display: flex;
+    justify-content: center;
+    position: relative;
 }
 
-.retangulo img {
+.foto-perfil {
+    margin-top: 50px;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+}
+
+.icone-perfil {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+}
+
+.nome-perfil {
+    margin-top: 65px;
+    font-size: 25px;
+}
+
+.descricao-perfil{
+    text-align: right;
+}
+
+.classe-perfil {
+    font-size: 22px;
+}
+
+.retangulo {
+    border-radius: 5px;
+    background-color: #1c1c1c;
+    margin: 10px;
+    overflow: hidden; /* Garante que a imagem fique dentro do retângulo */
     width: 200px;
     height: 300px;
-    object-fit: cover;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .retangulo:hover {
@@ -111,7 +139,6 @@ nav ul li a:hover {
 
 .filme-section {
     margin-top: 50px;
-    text-align: center;
 }
 
 .filme-container {
@@ -138,21 +165,16 @@ nav ul li a:hover {
     text-decoration: none;
 }
 
-.backimg {
-    width: 1000px;
-    height: 500px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    z-index: -1;
-    position: relative;
-    mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
-}
-
 .image_botao{
     cursor: pointer;
     border: none;
     background: transparent;
 }
 
+.titulo-section {
+    margin-left: 50px;
+    
+    .ver-todos {
+        display: flex;
+    }
+}

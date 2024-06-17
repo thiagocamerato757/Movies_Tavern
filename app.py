@@ -1,4 +1,5 @@
 import os
+from flask_bcrypt import Bcrypt
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, PrimaryKeyConstraint
 from sqlalchemy.ext.declarative import declarative_base
 from flask import Flask, render_template, request
@@ -13,6 +14,7 @@ def create_database():
     Cria o banco de dados SQLite com as tabelas necessárias.
     """
     engine = create_engine(f'sqlite:///{DATABASE_PATH}', echo=True)
+    Session = sessionmaker(bind = engine)
     Base = declarative_base()
 
     # Definição da tabela users
@@ -88,6 +90,27 @@ def home():
     featured_movies = get_featured_movies()
     return render_template('TelaInicial.html', featured_movies=featured_movies)
 
+@app.route('/cadastro_usuario', methods=['POST'])
+def cadastro_usuario():
+    nome =  request.args.get('nome') 
+    senha =  request.args.get('senha') 
+    senha_cript = bcrypt.generate_password_hash(senha).decode('utf-8')
+    user = User(nome,senha_cript,"campones")
+    try:
+        # Adiciona o novo usuário à sessão
+        session.add(novo_usuario)
+
+        # Commit para salvar as mudanças no banco de dados
+        session.commit()
+
+        # Fecha a sessão
+        session.close()
+        return {"mensagem": "Usuario cadastro com sucesso"},redirect(url_for('"tela de logi.html')), 200
+    except IntegrityError as e:
+        session.rollback()
+        return {"mensagem": "deu erro"}, 409
+
+
 @app.route('/search', methods=['GET'])
 def search():
     """
@@ -158,6 +181,14 @@ def pagination_range(current_page, total_pages, delta=1):
 @app.context_processor
 def utility_processor():
     return dict(pagination_range=pagination_range)
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/perfil')
+def perfil():
+    return render_template('perfil.html')
 
 if __name__ == '__main__':
     app.run(debug=True, port=8001) # Executa o aplicativo Flask no modo debug

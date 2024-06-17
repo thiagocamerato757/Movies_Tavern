@@ -65,3 +65,41 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    function showMore() {
+        const castList = document.getElementById('cast-list');
+        const castDataDiv = document.getElementById('full-cast-data');
+        const fullCast = JSON.parse(castDataDiv.textContent);
+
+        castList.innerHTML = '';
+        fullCast.forEach(member => {
+            const li = document.createElement('li');
+            li.textContent = member.name + ' - ' + member.character;
+            castList.appendChild(li);
+        });
+        document.getElementById('show-more').style.display = 'none';
+        document.getElementById('show-less').style.display = 'block';
+    }
+
+    function showLess() {
+        const castList = document.getElementById('cast-list');
+        const castDataDiv = document.getElementById('full-cast-data');
+        const fullCast = JSON.parse(castDataDiv.textContent);
+
+        castList.innerHTML = '';
+        fullCast.slice(0, 10).forEach(member => {
+            const li = document.createElement('li');
+            li.textContent = member.name + ' - ' + member.character;
+            castList.appendChild(li);
+        });
+        document.getElementById('show-more').style.display = 'block';
+        document.getElementById('show-less').style.display = 'none';
+    }
+
+    // Attach the functions to the window object so they're accessible in the HTML
+    window.showMore = showMore;
+    window.showLess = showLess;
+});
+
+
