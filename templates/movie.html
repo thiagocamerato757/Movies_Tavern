@@ -35,6 +35,8 @@
                     <img class="imagem-filme" src="{{ url_for('static', filename='noimage_door.png') }}" alt="{{ movie.title }} poster">
                 {% endif %}
                 <div class="avaliacao-container">
+                    <input type="checkbox" id="btn-favoritar" class="favoritar-checkbox">
+                    <label for="btn-favoritar" class="favoritar-label"></label> <!-- A label agora não possui conteúdo direto -->
                     <button id="btn-avaliar">Avaliar</button>
                     <ul class="avaliacao desabilitada">
                         <li class="star-icon" data-avaliacao="1"></li>
@@ -68,7 +70,7 @@
                     <button id="show-more" onclick="showMore()">Show all</button>
                     <button id="show-less" onclick="showLess()" style="display: none;">Show less</button>
                 </div>
-            {% endif %}
+                {% endif %}
         </div>
     </div>
     <div id="full-cast-data" style="display: none;">{{ cast|tojson }}</div>

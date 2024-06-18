@@ -243,3 +243,22 @@ p {
 #show-more:active, #show-less:active {
     transform: scale(0.95);
 }
+
+.favoritar-checkbox {
+    display: none; /* Esconde o checkbox */
+}
+
+.favoritar-label {
+    font-size: 24px; /* Ajuste conforme necessário */
+    color: white; /* Ajuste a cor conforme necessário */
+    cursor: pointer;
+    user-select: none;
+}
+
+.favoritar-checkbox:checked + .favoritar-label::before {
+    content: "\2764"; /* Código Unicode para o coração preenchido */
+}
+
+.favoritar-label::before {
+    content: "\2661"; /* Código Unicode para o coração vazio */
+}
