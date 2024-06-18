@@ -1,18 +1,13 @@
-import os
 from flask_bcrypt import Bcrypt
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, PrimaryKeyConstraint
-from sqlalchemy.ext.declarative import declarative_base
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for,json
 import requests
 import re
 from sqlite3 import IntegrityError
-
-#import bycrypt aqui
-
 from entidades import *
 
 
 app = Flask(__name__)
+bcrypt = Bcrypt(app)  # Inicializa o Bcrypt para hashing de senha
 
 if not app.config.get('TESTING', False):
     file = ".config"
@@ -54,28 +49,6 @@ def home():
     """
     featured_movies = get_featured_movies()
     return render_template('TelaInicial.html', featured_movies=featured_movies)
-
-@app.route('/cadastro_usuario', methods=['POST'])
-def cadastro_usuario():
-    session = Session
-    bcrypt = Bcrypt
-    nome =  request.args.get('nome') 
-    senha =  request.args.get('senha') 
-    senha_cript = bcrypt.generate_password_hash(senha).decode('utf-8')
-    user = User(nome,senha_cript,"campones")
-    try:
-        # Adiciona o novo usuário à sessão
-        session.add(user)
-
-        # Commit para salvar as mudanças no banco de dados
-        session.commit()
-
-        # Fecha a sessão
-        session.close()
-        return {"mensagem": "Usuario cadastro com sucesso"},redirect(url_for('login.html')), 200
-    except IntegrityError as e:
-        session.rollback()
-        return {"mensagem": "deu erro"}, 409
 
 
 @app.route('/search', methods=['GET'])
@@ -148,6 +121,36 @@ def pagination_range(current_page, total_pages, delta=1):
 @app.context_processor
 def utility_processor():
     return dict(pagination_range=pagination_range)
+@app.route('/cadastro_usuario', methods=['POST', 'GET'])
+def cadastro_usuario():
+    session = Session()  # Cria uma nova sessão para interação com o banco de dados
+    nome = request.form.get("username")  # Obtém o nome de usuário do formulário
+    senha = request.form.get("password")  # Obtém a senha do formulário
+    print(nome)  # Imprime o nome de usuário para depuração
+    print(senha)  # Imprime a senha para depuração
+    
+    if nome and senha:  # Verifica se ambos nome e senha foram fornecidos
+        password_hash = bcrypt.generate_password_hash(password=str(senha)).decode("utf-8")  # Gera o hash da senha
+        user = User(UserName=nome, Passworld=password_hash, Class="campones")  # Cria uma instância do usuário
+
+        try:
+            session.add(user)  # Adiciona o usuário à sessão
+            session.commit()  # Commit para salvar o usuário no banco de dados
+            session.close()  # Fecha a sessão
+            return "Usuário cadastrado com sucesso", 200  # Retorna sucesso
+        except IntegrityError:  # Captura erro de integridade, por exemplo, nome de usuário já existente
+            session.rollback()  # Reverte a transação em caso de erro
+            return "Erro: Nome de usuário já existe", 409  # Retorna erro
+    else:
+        return "Dados inválidos", 400  # Retorna erro se dados inválidos forem fornecidos
+
+@app.route('/login')
+def login():
+    return render_template('login.html')  # Renderiza a página de login
+
+@app.route('/perfil')
+def perfil():
+    return render_template('perfil.html')  # Renderiza a página de perfil
 
 @app.route('/login')
 def login():

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>                     
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f0f0f0;
+        }
+        form {
+            width: 300px;
+            margin: 50px auto;
+            background-color: #f8f8f8;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(77, 82, 149, 0.1);
+        }
+        input[type="text"], input[type="password"] {
+            width: calc(100% - 16px);
+            margin-bottom: 10px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            width: 100%;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<main class="form_cadastro">
+    <form action="/cadastro_usuario" method= "POST","GET">
+        <h2>Cadastro</h2>
+        <input type="text" name="username" placeholder="Nome" required>
+        <input type="password" name="password" placeholder="Senha" required>
+        <input type="submit" value="Cadastrar">
+    </form>
+</main>
+</body>
+</html>
