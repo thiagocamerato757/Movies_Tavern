@@ -256,7 +256,7 @@ p {
 }
 
 .favoritar-checkbox:checked + .favoritar-label::before {
-    content: "\2764"; /* Código Unicode para o coração preenchido */
+    content: "\2665"; /* Código Unicode para o coração preenchido */
 }
 
 .favoritar-label::before {
