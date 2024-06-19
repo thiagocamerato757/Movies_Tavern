@@ -9,3 +9,4 @@ SQLAlchemy
 SQLAlchemy-Utils
 typing_extensions
 requests
+flask_bcrypt
