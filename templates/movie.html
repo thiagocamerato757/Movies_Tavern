@@ -34,19 +34,24 @@
                 {% else %}
                     <img class="imagem-filme" src="{{ url_for('static', filename='noimage_door.png') }}" alt="{{ movie.title }} poster">
                 {% endif %}
-                <div class="avaliacao-container">
-                    <input type="checkbox" id="btn-favoritar" class="favoritar-checkbox">
-                    <label for="btn-favoritar" class="favoritar-label"></label> <!-- A label agora não possui conteúdo direto -->
-                    <button id="btn-avaliar">Avaliar</button>
-                    <ul class="avaliacao desabilitada">
-                        <li class="star-icon" data-avaliacao="1"></li>
-                        <li class="star-icon" data-avaliacao="2"></li>
-                        <li class="star-icon" data-avaliacao="3"></li>
-                        <li class="star-icon" data-avaliacao="4"></li>
-                        <li class="star-icon" data-avaliacao="5"></li>
-                    </ul>
-                    <button id="submit-rating" style="display: none;">Salvar</button>
+                <div class="av_favorito_container">
+                    <div class="favorito">
+                        <input type="checkbox" id="btn-favoritar" class="favoritar-checkbox">
+                        <label for="btn-favoritar" class="favoritar-label"></label> <!-- A label agora não possui conteúdo direto -->
+                    </div>
+                    <div class="avaliacao-container">
+                        <button id="btn-avaliar">Avaliar</button>
+                        <ul class="avaliacao desabilitada">
+                            <li class="star-icon" data-avaliacao="1"></li>
+                            <li class="star-icon" data-avaliacao="2"></li>
+                            <li class="star-icon" data-avaliacao="3"></li>
+                            <li class="star-icon" data-avaliacao="4"></li>
+                            <li class="star-icon" data-avaliacao="5"></li>
+                        </ul>
+                        <button id="submit-rating" style="display: none;">Salvar</button>
+                    </div>
                 </div>
+                
             </div>
             <div class="movie-info">
                 <h1 class="titulto-filme">{{ movie.title }}</h1>

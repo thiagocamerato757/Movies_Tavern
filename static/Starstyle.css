@@ -145,18 +145,31 @@ p {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 10px; /* Espaço entre a imagem e os botões */
+}
+
+.av_favorito_container {
+    display: flex;
+    justify-content: center; /* Centraliza os itens */
+    align-items: center;
+    width: 100%;
 }
 
 .avaliacao-container {
-    margin-top: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
+.favorito {
+    align-self: flex-start;
+    margin-right: 50px; /* Espaço entre avaliação e favorito */
+}
+
 .avaliacao {
     display: flex;
     padding-left: 0;
+    margin: 0; /* Remove margem padrão */
 }
 
 .avaliacao.desabilitada .star-icon {
