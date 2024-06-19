@@ -121,6 +121,9 @@ def pagination_range(current_page, total_pages, delta=1):
 @app.context_processor
 def utility_processor():
     return dict(pagination_range=pagination_range)
+@app.route('/form')
+def form():
+    return render_template("cadastro.html")
 @app.route('/cadastro_usuario', methods=['POST', 'GET'])
 def cadastro_usuario():
     session = Session()  # Cria uma nova sessão para interação com o banco de dados
@@ -151,14 +154,6 @@ def login():
 @app.route('/perfil')
 def perfil():
     return render_template('perfil.html')  # Renderiza a página de perfil
-
-@app.route('/login')
-def login():
-    return render_template('login.html')
-
-@app.route('/perfil')
-def perfil():
-    return render_template('perfil.html')
 
 if __name__ == '__main__':
     app.run(debug=True, port=8001) # Executa o aplicativo Flask no modo debug
