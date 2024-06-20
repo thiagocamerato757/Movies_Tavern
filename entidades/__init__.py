@@ -7,6 +7,7 @@ from sqlalchemy.orm import sessionmaker
 import requests
 import re
 
+from entidades.listaFavoritos import ListaFavoritos
 from entidades.user import User
 from entidades.avaliacao import Avaliacao
 from entidades.base import Base
