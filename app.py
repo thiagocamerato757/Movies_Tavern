@@ -8,6 +8,10 @@ from entidades import *
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)  # Inicializa o Bcrypt para hashing de senha
+global usuario
+usuario = None
+global classe
+classe = None
 
 if not app.config.get('TESTING', False):
     file = ".config"
@@ -127,20 +131,20 @@ def form():
 @app.route('/cadastro_usuario', methods=['POST', 'GET'])
 def cadastro_usuario():
     session = Session()  # Cria uma nova sessão para interação com o banco de dados
-    nome = request.form.get("username")  # Obtém o nome de usuário do formulário
+    global usuario
+    global classe
+    usuario = request.form.get("username")  # Obtém o nome de usuário do formulário
     senha = request.form.get("password")  # Obtém a senha do formulário
-    print(nome)  # Imprime o nome de usuário para depuração
-    print(senha)  # Imprime a senha para depuração
-    
-    if nome and senha:  # Verifica se ambos nome e senha foram fornecidos
+    classe = "campones"
+    if usuario and senha:  # Verifica se ambos nome e senha foram fornecidos
         password_hash = bcrypt.generate_password_hash(password=str(senha)).decode("utf-8")  # Gera o hash da senha
-        user = User(UserName=nome, Passworld=password_hash, Class="campones")  # Cria uma instância do usuário
+        user = User(UserName=usuario, Passworld=password_hash, Class=classe)  # Cria uma instância do usuário
 
         try:
             session.add(user)  # Adiciona o usuário à sessão
             session.commit()  # Commit para salvar o usuário no banco de dados
             session.close()  # Fecha a sessão
-            return "Usuário cadastrado com sucesso", 200  # Retorna sucesso
+            return redirect(url_for('perfil'))  # Redireciona para a página de perfil
         except IntegrityError:  # Captura erro de integridade, por exemplo, nome de usuário já existente
             session.rollback()  # Reverte a transação em caso de erro
             return "Erro: Nome de usuário já existe", 409  # Retorna erro
@@ -153,7 +157,9 @@ def login():
 
 @app.route('/perfil')
 def perfil():
-    return render_template('perfil.html')  # Renderiza a página de perfil
+    print(usuario)  # Imprime o nome de usuário para depuração
+    print(classe)  # Imprime a senha para depuração
+    return render_template('perfil.html', usuario=usuario, classe=classe)  # Passa as variáveis para o template
 
 if __name__ == '__main__':
     app.run(debug=True, port=8001) # Executa o aplicativo Flask no modo debug
