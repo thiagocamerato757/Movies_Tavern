@@ -1,12 +1,13 @@
 from flask_bcrypt import Bcrypt
-from flask import Flask, render_template, request, redirect, url_for,json
+from flask import Flask, render_template, request, redirect, url_for,flash
 import requests
 import re
-from sqlite3 import IntegrityError
+from sqlalchemy.exc import IntegrityError  # Corrigido: import correto do IntegrityError
 from entidades import *
 
 
 app = Flask(__name__)
+app.secret_key = os.urandom(24)  # Gera uma chave secreta aleatória para desenvolvimento
 bcrypt = Bcrypt(app)  # Inicializa o Bcrypt para hashing de senha
 global usuario
 usuario = None
@@ -130,7 +131,7 @@ def form():
     return render_template("cadastro.html")
 @app.route('/cadastro_usuario', methods=['POST', 'GET'])
 def cadastro_usuario():
-    session = Session()  # Cria uma nova sessão para interação com o banco de dados
+    session_db = Session()  # Cria uma nova sessão para interação com o banco de dados
     global usuario
     global classe
     usuario = request.form.get("username")  # Obtém o nome de usuário do formulário
@@ -139,17 +140,19 @@ def cadastro_usuario():
     if usuario and senha:  # Verifica se ambos nome e senha foram fornecidos
         password_hash = bcrypt.generate_password_hash(password=str(senha)).decode("utf-8")  # Gera o hash da senha
         user = User(UserName=usuario, Passworld=password_hash, Class=classe)  # Cria uma instância do usuário
-
         try:
-            session.add(user)  # Adiciona o usuário à sessão
-            session.commit()  # Commit para salvar o usuário no banco de dados
-            session.close()  # Fecha a sessão
-            return redirect(url_for('perfil'))  # Redireciona para a página de perfil
+            session_db.add(user)  # Adiciona o usuário à sessão
+            session_db.commit()  # Commit para salvar o usuário no banco de dados
+            session_db.close()  # Fecha a sessão
         except IntegrityError:  # Captura erro de integridade, por exemplo, nome de usuário já existente
-            session.rollback()  # Reverte a transação em caso de erro
-            return "Erro: Nome de usuário já existe", 409  # Retorna erro
+            session_db.rollback()  # Reverte a transação em caso de erro
+            flash("Error: Username already registered", "error")  # Exibe mensagem de erro
+            return redirect(url_for('form'))  # Redireciona para a página de cadastro
     else:
-        return "Dados inválidos", 400  # Retorna erro se dados inválidos forem fornecidos
+        flash("Invalid Data", "error")  # Exibe mensagem de erro
+        return redirect(url_for('form'))  # Redireciona para a página de cadastro
+    
+    return redirect(url_for('perfil'))  # Redireciona para a página de perfil
 
 @app.route('/login')
 def login():
@@ -157,8 +160,6 @@ def login():
 
 @app.route('/perfil')
 def perfil():
-    print(usuario)  # Imprime o nome de usuário para depuração
-    print(classe)  # Imprime a senha para depuração
     return render_template('perfil.html', usuario=usuario, classe=classe)  # Passa as variáveis para o template
 
 if __name__ == '__main__':

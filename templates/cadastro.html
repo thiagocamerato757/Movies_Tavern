@@ -1,19 +1,46 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-<head>                     
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro</title>
-    <link rel="stylesheet" href="static/cadastro.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='log-cadas.css') }}">
 </head>
 <body>
-<main class="form_cadastro">
-    <form action="/cadastro_usuario" method= "POST","GET">
-        <h2>Cadastro</h2>
-        <input type="text" name="username" placeholder="Nome" required>
-        <input type="password" name="password" placeholder="Senha" required>
-        <input type="submit" value="Cadastrar">
-    </form>
-</main>
+    <div class="container">
+        <div class="foto">
+            <img src="{{ url_for('static', filename='chinchilla.png') }}">
+        </div>
+        <h3>Please register your information!</h3>
+        <form action="{{ url_for('cadastro_usuario') }}" method="POST" class="nome-login">
+            <p>Username</p>
+            <input type="text" name="username" placeholder="Enter your username..." required>
+            <p>Password</p>
+            <input type="password" name="password" placeholder="Enter your password..." required>
+            <button class="confirma" type="submit">Register</button>
+        </form>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+    </div>
+    <script>
+        document.querySelectorAll('input[required]').forEach(input => {
+            input.oninvalid = function (e) {
+                e.target.setCustomValidity('');
+                if (!e.target.validity.valid) {
+                    e.target.setCustomValidity('Please fill out this field.');
+                }
+            };
+            input.oninput = function (e) {
+                e.target.setCustomValidity('');
+            };
+        });
+    </script>
 </body>
 </html>
