@@ -4,23 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Movies Tavern</title>
-    <link rel="stylesheet" href="static/log-cadas.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='log-cadas.css') }}">
 </head>
 <body>
     <div class="container">
         <div class="foto">
-            <img src="static/chinchilla.png">
+            <img src="{{ url_for('static', filename='chinchilla.png') }}">
         </div>
-        <h3>Welcome!</h3>
-        <p>Username</p>
-        <form class="nome-login" action="#" method="GET">
-            <input type="text" name="user" placeholder="Enter your username..." required>
-        </form>
-        <p>Password</p>
-        <form class="senha-login" action="#" method="GET">
-            <input type="text" name="senha" placeholder="Enter your password..." required>
-        </form>
-        <a href="/perfil"><button class="confirma" type="submit">Confirm</button></a>
+        {% if 'user_id' in session %}
+            <h3>Already registered as {{ session['user_id'] }}!</h3>
+            <a href="{{ url_for('perfil') }}"><button class="confirma" type="button">Go to Profile</button></a>
+        {% else %}
+            <h3>Welcome!</h3>
+            <p>Username</p>
+            <form class="nome-login" action="{{ url_for('login') }}" method="POST">
+                <input type="text" name="username" placeholder="Enter your username..." required>
+                <p>Password</p>
+                <input type="password" name="password" placeholder="Enter your password..." required>
+                <button class="confirma" type="submit">Confirm</button>
+            </form>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul class="flashes">
+                        {% for category, message in messages %}
+                            <li class="{{ category }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+        {% endif %}
     </div>
 </body>
 </html>

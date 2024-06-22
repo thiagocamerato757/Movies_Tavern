@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Movies Tavern</title>
-    <link rel="stylesheet" href="static/styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
-<body>
+<body>    
     <header>
         <div class="container">
             <a href="/"><button id="logo" class="botao_logo">Movies Tavern</button></a>
@@ -21,13 +21,13 @@
                 <form class="barra-pesquisa" action="/search" method="GET">
                     <input type="text" name="query" placeholder="Pesquisar..." required>
                     <button type="submit" class="botao-pesquisa">
-                        <img src="static/pesquisa-de-lupa.png" alt="Lupa" class="icone-lupa">
+                        <img src="{{ url_for('static', filename='pesquisa-de-lupa.png') }}" alt="Lupa" class="icone-lupa">
                     </button>
                 </form>
             </div>
         </div>
     </header>
-    <img class="backimg" src="static/tavern.jpg">
+    <img class="backimg" src="{{ url_for('static', filename='tavern.jpg') }}">    
     <div class="filme-section">
         <h2 class="titulo-lista">Filmes em destaque</h2>
         <div class="filme-container">

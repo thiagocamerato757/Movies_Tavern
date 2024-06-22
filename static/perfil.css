@@ -178,3 +178,18 @@ nav ul li a:hover {
         display: flex;
     }
 }
+.botao-logout {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #C5A647;
+    color: #1c1c1c;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.botao-logout:hover {
+    background-color: #a38f30;
+}

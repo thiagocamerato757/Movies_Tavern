@@ -4,9 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Movies Tavern</title>
-    <link rel="stylesheet" href="static/perfil.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='perfil.css') }}">
 </head>
 <body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
     <header>
         <div class="container">
             <a href="/"><button id="logo" class="botao_logo">Movies Tavern</button></a>
@@ -21,7 +30,7 @@
                 <form class="barra-pesquisa" action="/search" method="GET">
                     <input type="text" name="query" placeholder="Pesquisar..." required>
                     <button type="submit" class="botao-pesquisa">
-                        <img src="static/pesquisa-de-lupa.png" alt="Lupa" class="icone-lupa">
+                        <img src="{{ url_for('static', filename='pesquisa-de-lupa.png') }}" alt="Lupa" class="icone-lupa">
                     </button>
                 </form>
             </div>
@@ -29,13 +38,15 @@
     </header>
     <div class='perfil'>
         <div class="foto-perfil">
-            <img src="static/chinchilla.png" class="icone-perfil">
+            <img src="{{ url_for('static', filename='chinchilla.png') }}" class="icone-perfil">
         </div>
         <div class="descricao-perfil">
             <nav>
-                <ul class="nome-perfil">Nome de Usuário : {{ usuario }}</ul> 
+                <ul class="nome-perfil">Nome de Usuário : {{ usuario }}</ul>
                 <br>
                 <ul class="classe-perfil">Classe do usuário : {{ classe }}</ul>
+                <br>
+                <a href="{{ url_for('logout') }}"><button class="botao-logout">Sair</button></a>
             </nav>
         </div>
     </div>
@@ -62,7 +73,6 @@
             </div>
         </div>
     </div>
-
     <div class="filme-section">
         <div class="titulo-section">
             <h2 class="titulo-lista">Recent reviews</h2>

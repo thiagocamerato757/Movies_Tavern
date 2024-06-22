@@ -1,5 +1,5 @@
 from flask_bcrypt import Bcrypt
-from flask import Flask, render_template, request, redirect, url_for,flash
+from flask import Flask, render_template, request, redirect, url_for,flash,session as flask_session
 import requests
 import re
 from sqlalchemy.exc import IntegrityError  # Corrigido: import correto do IntegrityError
@@ -129,38 +129,71 @@ def utility_processor():
 @app.route('/form')
 def form():
     return render_template("cadastro.html")
-@app.route('/cadastro_usuario', methods=['POST', 'GET'])
+@app.route('/cadastro_usuario', methods=['POST'])
 def cadastro_usuario():
-    session_db = Session()  # Cria uma nova sessão para interação com o banco de dados
-    global usuario
-    global classe
-    usuario = request.form.get("username")  # Obtém o nome de usuário do formulário
-    senha = request.form.get("password")  # Obtém a senha do formulário
-    classe = "campones"
-    if usuario and senha:  # Verifica se ambos nome e senha foram fornecidos
-        password_hash = bcrypt.generate_password_hash(password=str(senha)).decode("utf-8")  # Gera o hash da senha
-        user = User(UserName=usuario, Passworld=password_hash, Class=classe)  # Cria uma instância do usuário
-        try:
-            session_db.add(user)  # Adiciona o usuário à sessão
-            session_db.commit()  # Commit para salvar o usuário no banco de dados
-            session_db.close()  # Fecha a sessão
-        except IntegrityError:  # Captura erro de integridade, por exemplo, nome de usuário já existente
-            session_db.rollback()  # Reverte a transação em caso de erro
-            flash("Error: Username already registered", "error")  # Exibe mensagem de erro
-            return redirect(url_for('form'))  # Redireciona para a página de cadastro
-    else:
-        flash("Invalid Data", "error")  # Exibe mensagem de erro
-        return redirect(url_for('form'))  # Redireciona para a página de cadastro
-    
-    return redirect(url_for('perfil'))  # Redireciona para a página de perfil
+    session_db = Session()
+    username = request.form.get("username")
+    password = request.form.get("password")
+    user_class = "campones"
 
-@app.route('/login')
+    if username and password:
+        password_hash = bcrypt.generate_password_hash(password).decode("utf-8")
+        user = User(UserName=username, Passworld=password_hash, Class=user_class)
+
+        try:
+            session_db.add(user)
+            session_db.commit()
+            flash('User registered successfully!', 'success')
+            flask_session['user_id'] = username
+            flask_session['user_class'] = user_class
+            return redirect(url_for('perfil'))
+        except IntegrityError:
+            session_db.rollback()
+            flash("Error: Username already registered", "error")
+            return redirect(url_for('form'))
+        finally:
+            session_db.close()
+    else:
+        flash("Invalid Data", "error")
+        return redirect(url_for('form'))
+
+@app.route('/login', methods=['POST', 'GET'])
 def login():
-    return render_template('login.html')  # Renderiza a página de login
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        if username and password:
+            session_db = Session()
+            user = session_db.query(User).filter_by(UserName=username).first()
+
+            if user and bcrypt.check_password_hash(user.Passworld, password):
+                flask_session['user_id'] = user.UserName
+                flask_session['user_class'] = user.Class
+                flash('Logged in successfully!', 'success')
+                return redirect(url_for('perfil'))
+            else:
+                flash("Invalid username or password", "error")
+            session_db.close()
+        else:
+            flash("Username and password are required", "error")
+
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    flask_session.pop('user_id', None)
+    flask_session.pop('user_class', None)
+    return redirect(url_for('home'))
+
 
 @app.route('/perfil')
 def perfil():
-    return render_template('perfil.html', usuario=usuario, classe=classe)  # Passa as variáveis para o template
+    if 'user_id' in flask_session:
+        return render_template('perfil.html', usuario=flask_session['user_id'], classe=flask_session['user_class'])
+    else:
+        flash('You need to log in first', 'error')
+        return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(debug=True, port=8001) # Executa o aplicativo Flask no modo debug
