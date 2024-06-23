@@ -102,4 +102,27 @@ document.addEventListener("DOMContentLoaded", function() {
     window.showLess = showLess;
 });
 
+function addFavorite(movieId) {
+    fetch('/add_favorite', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ movie_id: movieId }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+
+
 

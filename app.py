@@ -1,10 +1,9 @@
 from flask_bcrypt import Bcrypt
-from flask import Flask, render_template, request, redirect, url_for,flash,session as flask_session
+from flask import Flask, render_template, request, redirect, url_for,flash,session as flask_session, jsonify
 import requests
 import re
 from sqlalchemy.exc import IntegrityError  # Corrigido: import correto do IntegrityError
 from entidades import *
-
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)  # Gera uma chave secreta aleatória para desenvolvimento
@@ -104,7 +103,7 @@ def movie_detail(movie_id):
     credits = credits_response.json()
     cast = credits.get('cast', [])
     
-    return render_template('movie.html', movie=movie, cast=cast) # Renderiza o template com os detalhes do filme e do elenco
+    return render_template('movie.html', movie=movie, cast=cast, movie_id=movie_id) # Renderiza o template com os detalhes do filme e do elenco
 
 def pagination_range(current_page, total_pages, delta=1):
     """
@@ -194,6 +193,28 @@ def perfil():
     else:
         flash('You need to log in first', 'error')
         return redirect(url_for('login'))
+    
+@app.route('/add_favorite', methods=['POST'])
+def add_favorite():
+    if 'user_id' not in flask_session:
+        return jsonify({'error': 'You must be logged in to favorite a movie.'}), 401
+
+    data = request.get_json()
+    movie_id = data.get('movie_id')
+    print("nome: " + movie_id)
+    user_id = flask_session['user_id']
+
+    session_db = Session()
+    try:
+        favorite = ListaFavoritos(userName=user_id, movie_id=movie_id)
+        session_db.add(favorite)
+        session_db.commit()
+        return jsonify({'message': 'Movie added to favorites!'})
+    except IntegrityError:
+        session_db.rollback()
+        return jsonify({'error': 'Movie is already in your favorites.'}), 400
+    finally:
+        session_db.close()
 
 if __name__ == '__main__':
     app.run(debug=True, port=8001) # Executa o aplicativo Flask no modo debug

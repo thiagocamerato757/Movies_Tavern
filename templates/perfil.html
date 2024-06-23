@@ -42,11 +42,11 @@
         </div>
         <div class="descricao-perfil">
             <nav>
-                <ul class="nome-perfil">Nome de Usuário : {{ usuario }}</ul>
+                <ul class="nome-perfil">{{ usuario }}</ul>
                 <br>
-                <ul class="classe-perfil">Classe do usuário : {{ classe }}</ul>
+                <ul class="classe-perfil">Class: {{ classe }}</ul>
                 <br>
-                <a href="{{ url_for('logout') }}"><button class="botao-logout">Sair</button></a>
+                <a href="{{ url_for('logout') }}"><button class="botao-logout">Sign out</button></a>
             </nav>
         </div>
     </div>

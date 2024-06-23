@@ -36,8 +36,8 @@
                 {% endif %}
                 <div class="av_favorito_container">
                     <div class="favorito">
-                        <input type="checkbox" id="btn-favoritar" class="favoritar-checkbox">
-                        <label for="btn-favoritar" class="favoritar-label"></label> <!-- A label agora não possui conteúdo direto -->
+                        <input type="checkbox" id="btn-favoritar" class="favoritar-checkbox" onclick="addFavorite('{{movie_id}}', '{{ movie.title }}')">
+                        <label for="btn-favoritar" class="favoritar-label"></labeSl>
                     </div>
                     <div class="avaliacao-container">
                         <button id="btn-avaliar">Rate</button>
