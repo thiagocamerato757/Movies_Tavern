@@ -13,13 +13,13 @@
             <div class="nav-search-container">
                 <nav>
                     <ul>
-                        <li><a href="/login">Login</a></li>
-                        <li><a href="/form">Criar conta</a></li>
-                        <li><a href="/">Início</a></li>
+                        <li><a href="/login">Sign in</a></li>
+                        <li><a href="/form">Create account</a></li>
+                        <li><a href="/">Home</a></li>
                     </ul>
                 </nav>
                 <form class="barra-pesquisa" action="/search" method="GET">
-                    <input type="text" name="query" placeholder="Pesquisar..." required>
+                    <input type="text" name="query" placeholder="Search..." required>
                     <button type="submit" class="botao-pesquisa">
                         <img src="{{ url_for('static', filename='pesquisa-de-lupa.png') }}" alt="Lupa" class="icone-lupa">
                     </button>
@@ -29,7 +29,7 @@
     </header>
     <img class="backimg" src="{{ url_for('static', filename='tavern.jpg') }}">    
     <div class="filme-section">
-        <h2 class="titulo-lista">Filmes em destaque</h2>
+        <h2 class="titulo-lista">Featured Movies</h2>
         <div class="filme-container">
             {% for movie in featured_movies %}
                 <div class="filme-item">
