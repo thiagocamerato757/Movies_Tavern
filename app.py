@@ -141,7 +141,7 @@ def cadastro_usuario():
     session_db = Session()
     username = request.form.get("username")
     password = request.form.get("password")
-    user_class = "campones"
+    user_class = "Peasant"
 
     if username and password:
         password_hash = bcrypt.generate_password_hash(password).decode("utf-8")
