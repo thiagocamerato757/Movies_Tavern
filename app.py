@@ -1,17 +1,17 @@
 from flask_bcrypt import Bcrypt
 from flask import Flask, render_template, request, redirect, url_for,flash,session as flask_session, jsonify
+from flask_sqlalchemy import SQLAlchemy  # Importe SQLAlchemy corretamente
 import requests
 import re
 from sqlalchemy.exc import IntegrityError  # Corrigido: import correto do IntegrityError
 from entidades import *
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)  # Gera uma chave secreta aleatória para desenvolvimento
+app.secret_key = os.urandom(24)  # Chave secreta para desenvolvimento
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dataBase.db'  # Caminho para o banco de dados SQLite
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Evita avisos de depreciação
 bcrypt = Bcrypt(app)  # Inicializa o Bcrypt para hashing de senha
-global usuario
-usuario = None
-global classe
-classe = None
+db = SQLAlchemy(app)  # Inicializa o SQLAlchemy para o aplicativo
 
 if not app.config.get('TESTING', False):
     file = ".config"
@@ -19,7 +19,7 @@ if not app.config.get('TESTING', False):
     config = eval(contents)
     API_KEY = config['API_KEY']
 else:
-    API_KEY = "test_api_key"  # Use uma chave de API de teste durante os testes
+    API_KEY = "test_api_key"  # Use uma chave de API de teste durante os teste
 
 def get_featured_movies():
     """
@@ -150,7 +150,7 @@ def cadastro_usuario():
 
     if username and password:
         password_hash = bcrypt.generate_password_hash(password).decode("utf-8")
-        user = User(UserName=username, Passworld=password_hash, Class=user_class)
+        user = User(UserName=username, Password=password_hash, Class=user_class)
 
         try:
             session_db.add(user)
@@ -180,7 +180,7 @@ def login():
             session_db = Session()
             user = session_db.query(User).filter_by(UserName=username).first()
 
-            if user and bcrypt.check_password_hash(user.Passworld, password):
+            if user and bcrypt.check_password_hash(user.Password, password):
                 flask_session['user_id'] = user.UserName
                 flask_session['user_class'] = user.Class
                 flash('Logged in successfully!', 'success')

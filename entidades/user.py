@@ -14,7 +14,7 @@ class User(Base):
     __tablename__ = 'users'
     
     UserName = Column(String(50), primary_key=True, nullable=False)
-    Passworld = Column(String(80), nullable=False)
+    Password = Column(String(80), nullable=False)
     Class = Column(String(50), nullable=False)
 
     def set_password(self, password):
