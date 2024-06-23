@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.addEventListener("DOMContentLoaded", function() {
-    function showMore() {
+    function showMoreCast() {
         const castList = document.getElementById('cast-list');
         const castDataDiv = document.getElementById('full-cast-data');
         const fullCast = JSON.parse(castDataDiv.textContent);
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('show-less').style.display = 'block';
     }
 
-    function showLess() {
+    function showLessCast() {
         const castList = document.getElementById('cast-list');
         const castDataDiv = document.getElementById('full-cast-data');
         const fullCast = JSON.parse(castDataDiv.textContent);
@@ -98,9 +98,39 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Attach the functions to the window object so they're accessible in the HTML
-    window.showMore = showMore;
-    window.showLess = showLess;
+    window.showMoreCast = showMoreCast;
+    window.showLessCast = showLessCast;
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    function showMoreFavorite() {
+        const movieItems = document.querySelectorAll('.filme-item');
+        movieItems.forEach((item, index) => {
+            if (index >= 7) {
+                item.style.display = 'block';
+            }
+        });
+        document.getElementById('show-more').style.display = 'none';
+        document.getElementById('show-less').style.display = 'block';
+    }
+
+    function showLessFavorite() {
+        const movieItems = document.querySelectorAll('.filme-item');
+        movieItems.forEach((item, index) => {
+            if (index >= 7) {
+                item.style.display = 'none';
+            }
+        });
+        document.getElementById('show-more').style.display = 'block';
+        document.getElementById('show-less').style.display = 'none';
+    }
+
+    window.showMoreFavorite = showMoreFavorite;
+    window.showLessFavorite = showLessFavorite;
+
+    showLessFavorite();
+});
+
 
 function toggleFavorite(movieId) {
     fetch('/toggle_favorite', {

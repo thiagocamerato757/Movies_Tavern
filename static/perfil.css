@@ -135,13 +135,17 @@ nav ul li a:hover {
 
 .retangulo {
     border-radius: 5px;
-    background-color: #1c1c1c;
     margin: 10px;
     overflow: hidden; /* Garante que a imagem fique dentro do retângulo */
+    transition: transform 0.3s ease;
+}
+
+.retangulo img {
     width: 200px;
     height: 300px;
-    transition: transform 0.3s ease;
+    object-fit: cover;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
 }
 
 .retangulo:hover {
@@ -154,9 +158,10 @@ nav ul li a:hover {
 
 .filme-container {
     margin-top: 10px;
+    margin-left: 25px;
     padding-bottom: 20px;
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     flex-wrap: wrap; /* Permite que os itens quebrem em várias linhas se necessário */
 }
 
@@ -185,7 +190,7 @@ nav ul li a:hover {
 .titulo-section {
     margin-left: 50px;
     
-    .ver-todos {
+    .button-container {
         display: flex;
     }
 }
@@ -203,4 +208,12 @@ nav ul li a:hover {
 
 .botao-logout:hover {
     background-color: #a38f30;
+}
+
+#show-more, #show-less {
+    padding: 5px 10px;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
 }

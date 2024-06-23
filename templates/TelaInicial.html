@@ -45,6 +45,12 @@
                                     <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} poster" class="retangulo">
                                 </button>
                             </form>
+                        {% else %}
+                            <form action="{{ url_for('movie_detail', movie_id=movie.id) }}">
+                                <button type="submit" class="image_botao">
+                                    <img  class="no_image_movie" src="static/noimage_door.png" alt="{{ movie.title }} poster">
+                                </button>
+                            </form>
                         {% endif %}
                     </div>
                     <h3><a class="filme-titulo" href="{{ url_for('movie_detail', movie_id=movie.id) }}">{{ movie.title }}</a></h3>

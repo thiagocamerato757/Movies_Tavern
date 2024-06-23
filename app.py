@@ -197,7 +197,28 @@ def logout():
 @app.route('/perfil')
 def perfil():
     if 'user_id' in flask_session:
-        return render_template('perfil.html', usuario=flask_session['user_id'], classe=flask_session['user_class'])
+        user_id = flask_session['user_id']
+        session_db = Session()
+        
+        try:
+            # Buscando os filmes favoritos do usuário
+            favoritos = session_db.query(ListaFavoritos).filter_by(userName=user_id).all()
+            filmes_favoritos = []
+            for favorito in favoritos:
+                # Fazendo uma requisição para a API TMDb para obter detalhes do filme
+                movie_id = favorito.movie_id
+                movie_url = f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={API_KEY}'
+                movie_response = requests.get(movie_url)
+                if movie_response.status_code == 200:
+                    movie = movie_response.json()
+                    filmes_favoritos.append(movie)
+        except:
+            flash('Error loading favorite movies', 'error')
+            return redirect(url_for('login'))
+        finally:
+            session_db.close()
+
+        return render_template('perfil.html', usuario=flask_session['user_id'], classe=flask_session['user_class'], favorito=filmes_favoritos)
     else:
         flash('You need to log in first', 'error')
         return redirect(url_for('login'))
