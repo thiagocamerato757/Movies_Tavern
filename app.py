@@ -130,23 +130,18 @@ def pagination_range(current_page, total_pages, delta=1):
             range_with_dots.append(None)
     return range_with_dots
 
-# Processador de contexto para disponibilizar a função de paginação nos templates
 @app.context_processor
 def utility_processor():
     return dict(pagination_range=pagination_range)
-
-# Rota para o formulário de cadastro de usuário
 @app.route('/form')
 def form():
     return render_template("cadastro.html")
-
-# Rota para o cadastro de usuário
 @app.route('/cadastro_usuario', methods=['POST'])
 def cadastro_usuario():
     session_db = Session()
     username = request.form.get("username")
     password = request.form.get("password")
-    user_class = "campones"
+    user_class = "Peasant"
 
     if username and password:
         password_hash = bcrypt.generate_password_hash(password).decode("utf-8")
@@ -169,7 +164,6 @@ def cadastro_usuario():
         flash("Invalid Data", "error")
         return redirect(url_for('form'))
 
-# Rota para o processo de login
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
@@ -193,7 +187,6 @@ def login():
 
     return render_template('login.html')
 
-# Rota para o logout do usuário
 @app.route('/logout')
 def logout():
     flask_session.pop('user_id', None)
@@ -201,17 +194,36 @@ def logout():
     return redirect(url_for('home'))
 
 
-# Rota para a página de perfil do usuário
 @app.route('/perfil')
 def perfil():
     if 'user_id' in flask_session:
-        return render_template('perfil.html', usuario=flask_session['user_id'], classe=flask_session['user_class'])
+        user_id = flask_session['user_id']
+        session_db = Session()
+        
+        try:
+            # Buscando os filmes favoritos do usuário
+            favoritos = session_db.query(ListaFavoritos).filter_by(userName=user_id).all()
+            filmes_favoritos = []
+            for favorito in favoritos:
+                # Fazendo uma requisição para a API TMDb para obter detalhes do filme
+                movie_id = favorito.movie_id
+                movie_url = f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={API_KEY}'
+                movie_response = requests.get(movie_url)
+                if movie_response.status_code == 200:
+                    movie = movie_response.json()
+                    filmes_favoritos.append(movie)
+        except:
+            flash('Error loading favorite movies', 'error')
+            return redirect(url_for('login'))
+        finally:
+            session_db.close()
+
+        return render_template('perfil.html', usuario=flask_session['user_id'], classe=flask_session['user_class'], favorito=filmes_favoritos)
     else:
         flash('You need to log in first', 'error')
         return redirect(url_for('login'))
     
 
-# Rota para adicionar/remover um filme da lista de favoritos
 @app.route('/toggle_favorite', methods=['POST'])
 def toggle_favorite():
     if 'user_id' not in flask_session:
