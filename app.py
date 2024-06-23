@@ -130,17 +130,12 @@ def pagination_range(current_page, total_pages, delta=1):
             range_with_dots.append(None)
     return range_with_dots
 
-# Processador de contexto para disponibilizar a função de paginação nos templates
 @app.context_processor
 def utility_processor():
     return dict(pagination_range=pagination_range)
-
-# Rota para o formulário de cadastro de usuário
 @app.route('/form')
 def form():
     return render_template("cadastro.html")
-
-# Rota para o cadastro de usuário
 @app.route('/cadastro_usuario', methods=['POST'])
 def cadastro_usuario():
     session_db = Session()
@@ -169,7 +164,6 @@ def cadastro_usuario():
         flash("Invalid Data", "error")
         return redirect(url_for('form'))
 
-# Rota para o processo de login
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
@@ -193,7 +187,6 @@ def login():
 
     return render_template('login.html')
 
-# Rota para o logout do usuário
 @app.route('/logout')
 def logout():
     flask_session.pop('user_id', None)
@@ -201,7 +194,6 @@ def logout():
     return redirect(url_for('home'))
 
 
-# Rota para a página de perfil do usuário
 @app.route('/perfil')
 def perfil():
     if 'user_id' in flask_session:
@@ -211,7 +203,6 @@ def perfil():
         return redirect(url_for('login'))
     
 
-# Rota para adicionar/remover um filme da lista de favoritos
 @app.route('/toggle_favorite', methods=['POST'])
 def toggle_favorite():
     if 'user_id' not in flask_session:
