@@ -22,9 +22,14 @@
             <div class="nav-search-container">
                 <nav>
                     <ul>
-                        <li><a href="/login">Sign in</a></li>
-                        <li><a href="/form">Create account</a></li>
-                        <li><a href="/">Home</a></li>
+                        {% if 'user_id' in session %}
+                            <li><a href="/perfil"><img src="{{ url_for('static', filename='chinchilla.png') }}" class="icone-perfil"></a></li>
+                            <li><a href="/" class="home">Home</a></li>
+                        {% else %}
+                            <li><a href="/login">Sign in</a></li>
+                            <li><a href="/form">Create account</a></li>
+                            <li><a href="/">Home</a></li>
+                        {% endif %}
                     </ul>
                 </nav>
                 <form class="barra-pesquisa" action="/search" method="GET">
@@ -38,7 +43,7 @@
     </header>
     <div class='perfil'>
         <div class="foto-perfil">
-            <img src="{{ url_for('static', filename='chinchilla.png') }}" class="icone-perfil">
+            <img src="{{ url_for('static', filename='chinchilla.png') }}" class="icone-perfil-grande">
         </div>
         <div class="descricao-perfil">
             <nav>

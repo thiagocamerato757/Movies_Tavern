@@ -56,6 +56,17 @@ nav ul li a:hover {
     color: #C5A647;
 }
 
+.home {
+    vertical-align: -7px;
+}
+
+.icone-perfil {
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    margin-right: 20px;
+}
+
 .botao_logo {
     background-color: transparent;
     color: #fff;
@@ -103,7 +114,7 @@ nav ul li a:hover {
     height: 150px;
 }
 
-.icone-perfil {
+.icone-perfil-grande {
     border-radius: 50%;
     width: 150px;
     height: 150px;

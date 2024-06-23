@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ movie.title }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='Starstyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='moviestyle.css') }}">
 </head>
 <body>
     <header>
@@ -12,9 +12,14 @@
             <div class="nav-search-container">
                 <nav>
                     <ul>
-                        <li><a href="/login">Sign in</a></li>
-                        <li><a href="/form">Create account</a></li>
-                        <li><a href="/">Home</a></li>
+                        {% if 'user_id' in session %}
+                            <li><a href="/perfil"><img src="{{ url_for('static', filename='chinchilla.png') }}" class="icone-perfil"></a></li>
+                            <li><a href="/" class="home">Home</a></li>
+                        {% else %}
+                            <li><a href="/login">Sign in</a></li>
+                            <li><a href="/form">Create account</a></li>
+                            <li><a href="/">Home</a></li>
+                        {% endif %}
                     </ul>
                 </nav>
                 <form class="barra-pesquisa" action="/search" method="GET">

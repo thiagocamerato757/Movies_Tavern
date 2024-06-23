@@ -21,6 +21,7 @@ body {
 
 header {
     display: flex;
+    
     justify-content: center;
     width: 100%;
 }
@@ -33,6 +34,7 @@ header {
 .nav-search-container {
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 
 nav ul {
@@ -50,10 +52,22 @@ nav ul li a {
     color: #fff;
     font-size: 18px;
     transition: color 0.3s;
+    vertical-align: center;
 }
 
 nav ul li a:hover {
     color: #C5A647;
+}
+
+.home {
+    vertical-align: -7px;
+}
+
+.icone-perfil {
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    margin-right: 20px;
 }
 
 .botao_logo {
