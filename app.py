@@ -102,8 +102,16 @@ def movie_detail(movie_id):
     credits_response = requests.get(credits_url)
     credits = credits_response.json()
     cast = credits.get('cast', [])
+
+    is_favorite = False
+    if 'user_id' in flask_session:
+        user_id = flask_session['user_id']
+        session_db = Session()
+        favorite = session_db.query(ListaFavoritos).filter_by(userName=user_id, movie_id=movie_id).first()
+        is_favorite = favorite is not None
+        session_db.close()
     
-    return render_template('movie.html', movie=movie, cast=cast, movie_id=movie_id) # Renderiza o template com os detalhes do filme e do elenco
+    return render_template('movie.html', movie=movie, cast=cast, movie_id=movie_id,is_favorite=is_favorite) # Renderiza o template com os detalhes do filme e do elenco
 
 def pagination_range(current_page, total_pages, delta=1):
     """
@@ -194,25 +202,31 @@ def perfil():
         flash('You need to log in first', 'error')
         return redirect(url_for('login'))
     
-@app.route('/add_favorite', methods=['POST'])
-def add_favorite():
+
+@app.route('/toggle_favorite', methods=['POST'])
+def toggle_favorite():
     if 'user_id' not in flask_session:
         return jsonify({'error': 'You must be logged in to favorite a movie.'}), 401
 
     data = request.get_json()
     movie_id = data.get('movie_id')
-    print("nome: " + movie_id)
     user_id = flask_session['user_id']
 
     session_db = Session()
     try:
-        favorite = ListaFavoritos(userName=user_id, movie_id=movie_id)
-        session_db.add(favorite)
-        session_db.commit()
-        return jsonify({'message': 'Movie added to favorites!'})
+        favorite = session_db.query(ListaFavoritos).filter_by(userName=user_id, movie_id=movie_id).first()
+        if favorite:
+            session_db.delete(favorite)
+            session_db.commit()
+            return jsonify({'message': 'Movie removed from favorites!'})
+        else:
+            new_favorite = ListaFavoritos(userName=user_id, movie_id=movie_id)
+            session_db.add(new_favorite)
+            session_db.commit()
+            return jsonify({'message': 'Movie added to favorites!'})
     except IntegrityError:
         session_db.rollback()
-        return jsonify({'error': 'Movie is already in your favorites.'}), 400
+        return jsonify({'error': 'An error occurred.'}), 400
     finally:
         session_db.close()
 

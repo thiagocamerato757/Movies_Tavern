@@ -102,8 +102,8 @@ document.addEventListener("DOMContentLoaded", function() {
     window.showLess = showLess;
 });
 
-function addFavorite(movieId) {
-    fetch('/add_favorite', {
+function toggleFavorite(movieId) {
+    fetch('/toggle_favorite', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -122,7 +122,6 @@ function addFavorite(movieId) {
         console.error('Error:', error);
     });
 }
-
 
 
 
