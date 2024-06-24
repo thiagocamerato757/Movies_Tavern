@@ -144,6 +144,7 @@ function toggleFavorite(movieId) {
     .then(data => {
         if (data.error) {
             alert(data.error);
+            document.getElementById('btn-favoritar').checked = !document.getElementById('btn-favoritar').checked;
         } else {
             alert(data.message);
         }
