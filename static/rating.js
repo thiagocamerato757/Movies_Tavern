@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
             paintStars(rating);
             submitButton.style.display = 'none';
             avaliacao.classList.remove('avaliacao-enviada');
-            btnAvaliar.textContent = 'Avaliar';
+            btnAvaliar.textContent = 'Rate';
             avaliacao.classList.add('desabilitada');
         } else {
             avaliacao.classList.remove('desabilitada');
@@ -46,11 +46,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
     submitButton.addEventListener('click', function() {
         if (rating > 0) {
-            avaliacao.classList.add('avaliacao-enviada');
-            submitButton.style.display = 'none';
-            btnAvaliar.textContent = 'Excluir';
-            stars.forEach(star => {
-                star.style.pointerEvents = 'none';
+            fetch('/submit_rating', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    movie_id: movie_id,
+                    rating: rating
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    alert(data.message);
+                    avaliacao.classList.add('avaliacao-enviada');
+                    submitButton.style.display = 'none';
+                    btnAvaliar.textContent = 'Excluir';
+                    stars.forEach(star => {
+                        star.style.pointerEvents = 'none';
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
             });
         }
     });
@@ -65,6 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
 
 document.addEventListener("DOMContentLoaded", function() {
     function showMoreCast() {
@@ -97,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('show-less').style.display = 'none';
     }
 
-    // Attach the functions to the window object so they're accessible in the HTML
+    
     window.showMoreCast = showMoreCast;
     window.showLessCast = showLessCast;
 });
@@ -153,6 +175,3 @@ function toggleFavorite(movieId) {
         console.error('Error:', error);
     });
 }
-
-
-

@@ -259,5 +259,37 @@ def toggle_favorite():
     finally:
         session_db.close()
 
+@app.route('/submit_rating', methods=['POST'])
+def submit_rating():
+    if 'user_id' not in flask_session:
+        return jsonify({'error': 'You must be logged in to rate a movie.'}), 401
+    
+    data = request.get_json()
+    movie_id = data.get('movie_id')
+    rating = data.get('rating')
+    comentario = data.get('comentario', '')
+    user_id = flask_session['user_id']
+    
+    if not movie_id or not rating:
+        return jsonify({'error': 'Invalid data.'}), 400
+    
+    session_db = Session()
+    try:
+        user_rating = session_db.query(Avaliacao).filter_by(id_filme=movie_id, UserName=user_id).first()
+        if user_rating:
+            user_rating.stars = rating
+            user_rating.comentario = comentario
+        else:
+            new_rating = Avaliacao(id_filme=movie_id, UserName=user_id, stars=rating, comentario=comentario)
+            session_db.add(new_rating)
+        
+        session_db.commit()
+        return jsonify({'message': 'Rating submitted successfully!'})
+    except IntegrityError:
+        session_db.rollback()
+        return jsonify({'error': 'An error occurred.'}), 400
+    finally:
+        session_db.close()
+        
 if __name__ == '__main__':
     app.run(debug=True, port=8001) # Executa o aplicativo Flask no modo debug

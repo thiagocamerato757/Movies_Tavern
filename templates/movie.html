@@ -84,6 +84,9 @@
         </div>
     </div>
     <div id="full-cast-data" style="display: none;">{{ cast|tojson }}</div>
+    <script>
+        var movie_id = "{{ movie.id }}"; // Adiciona o movie_id ao contexto JavaScript
+    </script>
     <script src="{{ url_for('static', filename='rating.js') }}"></script>
 </body>
 </html>
