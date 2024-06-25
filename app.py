@@ -209,6 +209,16 @@ def perfil():
         session_db = Session()
         
         try:
+            reviews = session_db.query(Avaliacao).filter_by(UserName=user_id).all()
+            recent_reviews = []
+            for review in reviews:
+                id_filme = review.id_filme
+                url_filme = f'https://api.themoviedb.org/3/movie/{id_filme}?api_key={API_KEY}'
+                filme_response = requests.get(url_filme)
+                if filme_response.status_code == 200:
+                    filme = filme_response.json()
+                    recent_reviews.append(filme)
+
             # Buscando os filmes favoritos do usuário
             favoritos = session_db.query(ListaFavoritos).filter_by(userName=user_id).all()
             filmes_favoritos = []
@@ -221,12 +231,12 @@ def perfil():
                     movie = movie_response.json()
                     filmes_favoritos.append(movie)
         except:
-            flash('Error loading favorite movies', 'error')
+            flash('Error loading favorite movies or recent reviews', 'error')
             return redirect(url_for('login'))
         finally:
             session_db.close()
 
-        return render_template('perfil.html', usuario=flask_session['user_id'], classe=flask_session['user_class'], favorito=filmes_favoritos)
+        return render_template('perfil.html', usuario=flask_session['user_id'], classe=flask_session['user_class'], favorito=filmes_favoritos, review=recent_reviews)
     else:
         flash('You need to log in first', 'error')
         return redirect(url_for('login'))
