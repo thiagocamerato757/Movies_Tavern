@@ -6,13 +6,14 @@ document.addEventListener('DOMContentLoaded', function() {
     var rating = 0;
 
     btnAvaliar.addEventListener('click', function() {
-        if (btnAvaliar.textContent === 'Excluir') {
+        if (btnAvaliar.textContent === 'Delete') {
             rating = 0;
             paintStars(rating);
             submitButton.style.display = 'none';
             avaliacao.classList.remove('avaliacao-enviada');
             btnAvaliar.textContent = 'Rate';
             avaliacao.classList.add('desabilitada');
+            deleteRating()
         } else {
             avaliacao.classList.remove('desabilitada');
             stars.forEach(star => {
@@ -64,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     alert(data.message);
                     avaliacao.classList.add('avaliacao-enviada');
                     submitButton.style.display = 'none';
-                    btnAvaliar.textContent = 'Excluir';
+                    btnAvaliar.textContent = 'Delete';
                     stars.forEach(star => {
                         star.style.pointerEvents = 'none';
                     });
@@ -83,6 +84,29 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 s.classList.remove('ativo');
             }
+        });
+    }
+
+    function deleteRating() {
+        fetch('/delete_rating', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                movie_id: movie_id
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
         });
     }
 });

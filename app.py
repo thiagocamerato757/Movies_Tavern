@@ -111,7 +111,19 @@ def movie_detail(movie_id):
         is_favorite = favorite is not None
         session_db.close()
     
-    return render_template('movie.html', movie=movie, cast=cast, movie_id=movie_id,is_favorite=is_favorite) # Renderiza o template com os detalhes do filme e do elenco
+    user_rating = None
+    if 'user_id' in flask_session:
+        user_id = flask_session['user_id']
+        session_db = Session()
+        favorite = session_db.query(ListaFavoritos).filter_by(userName=user_id, movie_id=movie_id).first()
+        is_favorite = favorite is not None
+        
+        user_rating_entry = session_db.query(Avaliacao).filter_by(id_filme=movie_id, UserName=user_id).first()
+        if user_rating_entry:
+            user_rating = user_rating_entry.stars
+        session_db.close()
+    
+    return render_template('movie.html', movie=movie, cast=cast, movie_id=movie_id, is_favorite=is_favorite, user_rating=user_rating)  # Renderiza o template com os detalhes do filme e do elenco
 
 def pagination_range(current_page, total_pages, delta=1):
     """
@@ -300,6 +312,33 @@ def submit_rating():
         return jsonify({'error': 'An error occurred.'}), 400
     finally:
         session_db.close()
-        
+
+@app.route('/delete_rating', methods=['POST'])
+def delete_rating():
+    if 'user_id' not in flask_session:
+        return jsonify({'error': 'You must be logged in to delete a rating.'}), 401
+    
+    data = request.get_json()
+    movie_id = data.get('movie_id')
+    user_id = flask_session['user_id']
+    
+    if not movie_id:
+        return jsonify({'error': 'Invalid data.'}), 400
+    
+    session_db = Session()
+    try:
+        user_rating = session_db.query(Avaliacao).filter_by(id_filme=movie_id, UserName=user_id).first()
+        if user_rating:
+            session_db.delete(user_rating)
+            session_db.commit()
+            return jsonify({'message': 'Rating deleted successfully!'})
+        else:
+            return jsonify({'error': 'Rating not found.'}), 404
+    except IntegrityError:
+        session_db.rollback()
+        return jsonify({'error': 'An error occurred.'}), 400
+    finally:
+        session_db.close()
+    
 if __name__ == '__main__':
     app.run(debug=True, port=8001) # Executa o aplicativo Flask no modo debug
