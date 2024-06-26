@@ -5,6 +5,7 @@ import requests
 import re
 from sqlalchemy.exc import IntegrityError  # Corrigido: import correto do IntegrityError
 from entidades import *
+from sqlalchemy import func
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)  # Chave secreta para desenvolvimento
@@ -102,28 +103,41 @@ def movie_detail(movie_id):
     credits_response = requests.get(credits_url)
     credits = credits_response.json()
     cast = credits.get('cast', [])
-
+    session_db = Session()
     is_favorite = False
     if 'user_id' in flask_session:
         user_id = flask_session['user_id']
-        session_db = Session()
+        
         favorite = session_db.query(ListaFavoritos).filter_by(userName=user_id, movie_id=movie_id).first()
         is_favorite = favorite is not None
-        session_db.close()
+        
     
     user_rating = None
     if 'user_id' in flask_session:
         user_id = flask_session['user_id']
         session_db = Session()
-        favorite = session_db.query(ListaFavoritos).filter_by(userName=user_id, movie_id=movie_id).first()
-        is_favorite = favorite is not None
         
         user_rating_entry = session_db.query(Avaliacao).filter_by(id_filme=movie_id, UserName=user_id).first()
+        
         if user_rating_entry:
             user_rating = user_rating_entry.stars
-        session_db.close()
-    
-    return render_template('movie.html', movie=movie, cast=cast, movie_id=movie_id, is_favorite=is_favorite, user_rating=user_rating)  # Renderiza o template com os detalhes do filme e do elenco
+        
+    total = 0
+    sum_ratings = 0
+
+    # Contar o número total de avaliações e somar as notas das avaliações
+    for avaliacao in session_db.query(Avaliacao).filter_by(id_filme=movie_id):
+        total += 1
+        sum_ratings += avaliacao.stars
+
+    # Calcular a média das avaliações
+    if total == 0:
+        average_rating = 0
+    else:
+        average_rating = sum_ratings / total
+    average_rating_rounded = round(average_rating, 1) # arredondar para somente uma casa decimal
+    session_db.close()
+    return render_template('movie.html', movie=movie, cast=cast, movie_id=movie_id, is_favorite=is_favorite, user_rating=user_rating, average_rating=average_rating_rounded)  # Renderiza o template com os detalhes do filme e do elenco
 
 def pagination_range(current_page, total_pages, delta=1):
     """

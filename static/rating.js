@@ -3,7 +3,18 @@ document.addEventListener('DOMContentLoaded', function() {
     var avaliacao = document.querySelector('.avaliacao');
     var submitButton = document.getElementById('submit-rating');
     var stars = document.querySelectorAll('.star-icon');
-    var rating = 0;
+    var rating = parseInt(user_rating) || 0;
+
+    if (rating > 0) {
+        paintStars(rating);
+        avaliacao.classList.add('desabilitada');
+        btnAvaliar.textContent = 'Delete';
+        stars.forEach(star => {
+            star.style.pointerEvents = 'none';
+        });
+    } else {
+        avaliacao.classList.add('desabilitada');
+    }
 
     btnAvaliar.addEventListener('click', function() {
         if (btnAvaliar.textContent === 'Delete') {
@@ -110,7 +121,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
-
 
 document.addEventListener("DOMContentLoaded", function() {
     function showMoreCast() {

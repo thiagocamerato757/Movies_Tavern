@@ -39,13 +39,13 @@
                 {% else %}
                     <img class="imagem-filme" src="{{ url_for('static', filename='noimage_door.png') }}" alt="{{ movie.title }} poster">
                 {% endif %}
-                <div class="av_favorito_container">
+                <div class="av_favorito_container" data-movie-id="{{ movie_id }}" data-user-name="{{ user_id }}">
                     <div class="favorito">
                         <input type="checkbox" id="btn-favoritar" class="favoritar-checkbox" onclick="toggleFavorite('{{ movie_id }}')" {% if is_favorite %}checked{% endif %}>
                         <label for="btn-favoritar" class="favoritar-label"></label>
                     </div>
                     <div class="avaliacao-container">
-                        <button id="btn-avaliar">Rate</button>
+                        <button id="btn-avaliar">{% if user_rating %}Delete{% else %}Rate{% endif %}</button>
                         <ul class="avaliacao desabilitada">
                             <li class="star-icon" data-avaliacao="1"></li>
                             <li class="star-icon" data-avaliacao="2"></li>
@@ -85,7 +85,8 @@
     </div>
     <div id="full-cast-data" style="display: none;">{{ cast|tojson }}</div>
     <script>
-        var movie_id = "{{ movie.id }}"; // Adiciona o movie_id ao contexto JavaScript
+        var movie_id = "{{ movie.id }}";
+        var user_rating = "{{ user_rating }}";
     </script>
     <script src="{{ url_for('static', filename='rating.js') }}"></script>
 </body>
