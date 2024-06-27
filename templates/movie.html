@@ -39,7 +39,7 @@
                 {% else %}
                     <img class="imagem-filme" src="{{ url_for('static', filename='noimage_door.png') }}" alt="{{ movie.title }} poster">
                 {% endif %}
-                <div class="av_favorito_container" data-movie-id="{{ movie_id }}" data-user-name="{{ user_id }}">
+                <div class="av_favorito_container">
                     <div class="favorito">
                         <input type="checkbox" id="btn-favoritar" class="favoritar-checkbox" onclick="toggleFavorite('{{ movie_id }}')" {% if is_favorite %}checked{% endif %}>
                         <label for="btn-favoritar" class="favoritar-label"></label>
@@ -55,6 +55,7 @@
                         </ul>
                         <button id="submit-rating" style="display: none;">Save</button>
                     </div>
+                    
                 </div>
                 
             </div>
@@ -66,6 +67,10 @@
                     <h2>Average rating</h2>
                     <p>{{ average_rating }} / 5</p>
                 </div>
+                <form class="barra-comentario" action="/comment" method="GET">
+                    <input type="text" name="query" placeholder="Write your comment..." required>
+                    <button type="submit" class="comentario">Enter</button>
+                </form>
             </div>
         </div>
         <div class="elenco">
