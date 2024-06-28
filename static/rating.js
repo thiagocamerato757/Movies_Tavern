@@ -3,16 +3,28 @@ document.addEventListener('DOMContentLoaded', function() {
     var avaliacao = document.querySelector('.avaliacao');
     var submitButton = document.getElementById('submit-rating');
     var stars = document.querySelectorAll('.star-icon');
-    var rating = 0;
+    var rating = parseInt(user_rating) || 0;
+
+    if (rating > 0) {
+        paintStars(rating);
+        avaliacao.classList.add('desabilitada');
+        btnAvaliar.textContent = 'Delete';
+        stars.forEach(star => {
+            star.style.pointerEvents = 'none';
+        });
+    } else {
+        avaliacao.classList.add('desabilitada');
+    }
 
     btnAvaliar.addEventListener('click', function() {
-        if (btnAvaliar.textContent === 'Excluir') {
+        if (btnAvaliar.textContent === 'Delete') {
             rating = 0;
             paintStars(rating);
             submitButton.style.display = 'none';
             avaliacao.classList.remove('avaliacao-enviada');
-            btnAvaliar.textContent = 'Avaliar';
+            btnAvaliar.textContent = 'Rate';
             avaliacao.classList.add('desabilitada');
+            deleteRating()
         } else {
             avaliacao.classList.remove('desabilitada');
             stars.forEach(star => {
@@ -46,11 +58,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
     submitButton.addEventListener('click', function() {
         if (rating > 0) {
-            avaliacao.classList.add('avaliacao-enviada');
-            submitButton.style.display = 'none';
-            btnAvaliar.textContent = 'Excluir';
-            stars.forEach(star => {
-                star.style.pointerEvents = 'none';
+            fetch('/submit_rating', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    movie_id: movie_id,
+                    rating: rating
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    alert(data.message);
+                    avaliacao.classList.add('avaliacao-enviada');
+                    submitButton.style.display = 'none';
+                    btnAvaliar.textContent = 'Delete';
+                    stars.forEach(star => {
+                        star.style.pointerEvents = 'none';
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
             });
         }
     });
@@ -62,6 +95,29 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 s.classList.remove('ativo');
             }
+        });
+    }
+
+    function deleteRating() {
+        fetch('/delete_rating', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                movie_id: movie_id
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
         });
     }
 });
@@ -97,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('show-less').style.display = 'none';
     }
 
-    // Attach the functions to the window object so they're accessible in the HTML
+    
     window.showMoreCast = showMoreCast;
     window.showLessCast = showLessCast;
 });
@@ -144,6 +200,7 @@ function toggleFavorite(movieId) {
     .then(data => {
         if (data.error) {
             alert(data.error);
+            document.getElementById('btn-favoritar').checked = !document.getElementById('btn-favoritar').checked;
         } else {
             alert(data.message);
         }
@@ -152,6 +209,3 @@ function toggleFavorite(movieId) {
         console.error('Error:', error);
     });
 }
-
-
-

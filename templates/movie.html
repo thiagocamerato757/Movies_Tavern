@@ -45,7 +45,7 @@
                         <label for="btn-favoritar" class="favoritar-label"></label>
                     </div>
                     <div class="avaliacao-container">
-                        <button id="btn-avaliar">Rate</button>
+                        <button id="btn-avaliar">{% if user_rating %}Delete{% else %}Rate{% endif %}</button>
                         <ul class="avaliacao desabilitada">
                             <li class="star-icon" data-avaliacao="1"></li>
                             <li class="star-icon" data-avaliacao="2"></li>
@@ -53,8 +53,9 @@
                             <li class="star-icon" data-avaliacao="4"></li>
                             <li class="star-icon" data-avaliacao="5"></li>
                         </ul>
-                        <button id="submit-rating" style="display: none;">Salvar</button>
+                        <button id="submit-rating" style="display: none;">Save</button>
                     </div>
+                    
                 </div>
                 
             </div>
@@ -66,6 +67,10 @@
                     <h2>Average rating</h2>
                     <p>{{ average_rating }} / 5</p>
                 </div>
+                <form class="barra-comentario" action="/comment" method="GET">
+                    <input type="text" name="query" placeholder="Write your comment..." required>
+                    <button type="submit" class="comentario">Enter</button>
+                </form>
             </div>
         </div>
         <div class="elenco">
@@ -84,6 +89,10 @@
         </div>
     </div>
     <div id="full-cast-data" style="display: none;">{{ cast|tojson }}</div>
+    <script>
+        var movie_id = "{{ movie.id }}";
+        var user_rating = "{{ user_rating }}";
+    </script>
     <script src="{{ url_for('static', filename='rating.js') }}"></script>
 </body>
 </html>

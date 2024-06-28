@@ -83,21 +83,26 @@
             <p class="ver-todos">See all...</p>
         </div>
         <div class="filme-container">
+            {% for movie in review %}
             <div class="filme-item">
-                <div class="retangulo"></div>
+                <div class="retangulo">
+                    {% if movie.poster_path %}
+                        <form action="{{ url_for('movie_detail', movie_id=movie.id) }}">
+                            <button type="submit" class="image_botao">
+                                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} poster" class="retangulo">
+                            </button>
+                        </form>
+                    {% else %}
+                        <form action="{{ url_for('movie_detail', movie_id=movie.id) }}">
+                            <button type="submit" class="image_botao">
+                                <img class="retangulo" src="static/noimage_door.png" alt="{{ movie.title }} poster">
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+                <h3><a class="filme-titulo" href="{{ url_for('movie_detail', movie_id=movie.id) }}">{{ movie.title }}</a></h3>
             </div>
-            <div class="filme-item">
-                <div class="retangulo"></div>
-            </div>
-            <div class="filme-item">
-                <div class="retangulo"></div>
-            </div>
-            <div class="filme-item">
-                <div class="retangulo"></div>
-            </div>
-            <div class="filme-item">
-                <div class="retangulo"></div>
-            </div>
+        {% endfor %}
         </div>
     </div>
     <script src="{{ url_for('static', filename='rating.js') }}"></script>
