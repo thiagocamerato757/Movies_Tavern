@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', function() {
     var submitButton = document.getElementById('submit-rating');
     var stars = document.querySelectorAll('.star-icon');
     var rating = parseInt(user_rating) || 0;
+    var popup = document.getElementById("comment-popup");
+    var span = document.getElementsByClassName("close")[0];
+    var textarea = document.getElementById('comment-textarea');
 
     if (rating > 0) {
         paintStars(rating);
@@ -26,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
             avaliacao.classList.add('desabilitada');
             deleteRating()
         } else {
+            openPopup()
             avaliacao.classList.remove('desabilitada');
             stars.forEach(star => {
                 star.style.pointerEvents = 'auto';
@@ -72,6 +76,14 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (data.error) {
                     alert(data.error);
+                    rating = 0;
+                    paintStars(rating)
+                    avaliacao.classList.add('avaliacao-enviada');
+                    submitButton.style.display = 'none';
+                    btnAvaliar.textContent = 'Rate';
+                    stars.forEach(star => {
+                        star.style.pointerEvents = 'none';
+                    });
                 } else {
                     alert(data.message);
                     avaliacao.classList.add('avaliacao-enviada');
@@ -120,6 +132,26 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error:', error);
         });
     }
+
+    function openPopup() {
+        popup.style.display = "flex";
+    }
+
+    span.onclick = function() {
+        popup.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == popup) {
+            popup.style.display = "none";
+        }
+    }
+
+    // Ajusta a area de texto conforme o usuário digita
+    textarea.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+    });
 });
 
 document.addEventListener("DOMContentLoaded", function() {

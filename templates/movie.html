@@ -44,35 +44,40 @@
                         <input type="checkbox" id="btn-favoritar" class="favoritar-checkbox" onclick="toggleFavorite('{{ movie_id }}')" {% if is_favorite %}checked{% endif %}>
                         <label for="btn-favoritar" class="favoritar-label"></label>
                     </div>
-                    <div class="avaliacao-container">
-                        <button id="btn-avaliar">{% if user_rating %}Delete{% else %}Rate{% endif %}</button>
-                        <ul class="avaliacao desabilitada">
-                            <li class="star-icon" data-avaliacao="1"></li>
-                            <li class="star-icon" data-avaliacao="2"></li>
-                            <li class="star-icon" data-avaliacao="3"></li>
-                            <li class="star-icon" data-avaliacao="4"></li>
-                            <li class="star-icon" data-avaliacao="5"></li>
-                        </ul>
-                        <button id="submit-rating" style="display: none;">Save</button>
+                    <div class="comment-container">
+                        <div class="avaliacao-container">
+                            <button id="btn-avaliar">{% if user_rating %}Delete{% else %}Rate{% endif %}</button>
+                            <div id="comment-popup" class="popup">
+                                <div class="popup-content">
+                                    <span class="close">&times;</span>
+                                    <ul class="avaliacao desabilitada">
+                                        <li class="star-icon" data-avaliacao="1"></li>
+                                        <li class="star-icon" data-avaliacao="2"></li>
+                                        <li class="star-icon" data-avaliacao="3"></li>
+                                        <li class="star-icon" data-avaliacao="4"></li>
+                                        <li class="star-icon" data-avaliacao="5"></li>
+                                    </ul>
+                                    <form class="barra-comentario" action="/comment" method="GET">
+                                        <textarea id="comment-textarea" name="query" placeholder="(Optional) Write your comment..." required maxlength="1000"></textarea>
+                                    </form>
+                                    <button id="submit-rating" style="display: none;">Save</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    
                 </div>
-                
             </div>
             <div class="movie-info">
                 <h1 class="titulto-filme">{{ movie.title }}</h1>
                 <p>{{ movie.overview }}</p>
-                <br><br><br>
+                
                 <div class="avaliacao-geral">
                     <h2>Average rating</h2>
                     <p>{{ average_rating }} / 5</p>
                 </div>
-                <form class="barra-comentario" action="/comment" method="GET">
-                    <input type="text" name="query" placeholder="Write your comment..." required>
-                    <button type="submit" class="comentario">Enter</button>
-                </form>
             </div>
         </div>
+        
         <div class="elenco">
             <h2>Cast</h2><br>
             <ul id="cast-list">
