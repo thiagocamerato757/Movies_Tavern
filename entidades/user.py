@@ -7,7 +7,6 @@ from sqlalchemy.orm import sessionmaker
 import requests
 import re
 from entidades.base import Base
-from werkzeug.security import generate_password_hash, check_password_hash
 
 # Definição da tabela users
 class User(Base):
@@ -16,9 +15,3 @@ class User(Base):
     UserName = Column(String(50), primary_key=True, nullable=False)
     Password = Column(String(80), nullable=False)
     Class = Column(String(50), nullable=False)
-
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
-    
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
