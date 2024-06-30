@@ -4,9 +4,11 @@ document.addEventListener('DOMContentLoaded', function() {
     var submitButton = document.getElementById('submit-rating');
     var stars = document.querySelectorAll('.star-icon');
     var rating = parseInt(user_rating) || 0;
-    var popup = document.getElementById("comment-popup");
+    var popup = document.getElementById('comment-popup');
     var span = document.getElementsByClassName("close")[0];
     var textarea = document.getElementById('comment-textarea');
+    var isLoggedIn = (is_logged_in === 'true');
+    
 
     if (rating > 0) {
         paintStars(rating);
@@ -20,7 +22,35 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     btnAvaliar.addEventListener('click', function() {
-        if (btnAvaliar.textContent === 'Delete') {
+        if (!isLoggedIn) {
+            fetch('/submit_rating', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    movie_id: movie_id
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                    rating = 0;
+                    paintStars(rating)
+                    avaliacao.classList.add('avaliacao-enviada');
+                    submitButton.style.display = 'none';
+                    btnAvaliar.textContent = 'Rate';
+                    stars.forEach(star => {
+                        star.style.pointerEvents = 'none';
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+        else if (btnAvaliar.textContent === 'Delete') {
             rating = 0;
             paintStars(rating);
             submitButton.style.display = 'none';
@@ -34,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
             stars.forEach(star => {
                 star.style.pointerEvents = 'auto';
             });
+            textarea.disabled = false;
         }
     });
 
@@ -62,6 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     submitButton.addEventListener('click', function() {
         if (rating > 0) {
+            var comentario = textarea.value;
             fetch('/submit_rating', {
                 method: 'POST',
                 headers: {
@@ -69,22 +101,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 body: JSON.stringify({
                     movie_id: movie_id,
-                    rating: rating
+                    rating: rating,
+                    comentario: comentario
                 }),
             })
             .then(response => response.json())
             .then(data => {
-                if (data.error) {
-                    alert(data.error);
-                    rating = 0;
-                    paintStars(rating)
-                    avaliacao.classList.add('avaliacao-enviada');
-                    submitButton.style.display = 'none';
-                    btnAvaliar.textContent = 'Rate';
-                    stars.forEach(star => {
-                        star.style.pointerEvents = 'none';
-                    });
-                } else {
+                if (data.message){
                     alert(data.message);
                     avaliacao.classList.add('avaliacao-enviada');
                     submitButton.style.display = 'none';
@@ -92,6 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     stars.forEach(star => {
                         star.style.pointerEvents = 'none';
                     });
+                    textarea.disabled = true;
                 }
             })
             .catch((error) => {

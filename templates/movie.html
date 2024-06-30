@@ -97,6 +97,7 @@
     <script>
         var movie_id = "{{ movie.id }}";
         var user_rating = "{{ user_rating }}";
+        var is_logged_in = "{{ 'true' if 'user_id' in session else 'false' }}";
     </script>
     <script src="{{ url_for('static', filename='rating.js') }}"></script>
 </body>
