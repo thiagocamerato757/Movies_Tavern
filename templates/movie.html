@@ -93,6 +93,24 @@
                 {% endif %}
         </div>
     </div>
+    <div class="comments-section">
+        <h2>Reviews</h2>
+        <ul id="comments-list">
+            {% if comments %}
+                {% for comment in comments %}
+                <li class="comment-item">
+                    <div class="comment-user-info">
+                        <a href="#" class="comment-user-name">{{ comment.UserName }}</a>
+                        <span class="comment-user-rating">{{ comment.stars }} <span style="font-size: 20px;">&#9733;</span></span>
+                    </div>
+                    <p class="comment-text">{{ comment.comentario }}</p>
+                </li>
+                {% endfor %}
+            {% else %}
+                <p>No reviews...</p>
+            {% endif %}
+        </ul>
+    </div>
     <div id="full-cast-data" style="display: none;">{{ cast|tojson }}</div>
     <script>
         var movie_id = "{{ movie.id }}";

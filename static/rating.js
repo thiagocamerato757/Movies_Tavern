@@ -216,7 +216,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 document.addEventListener("DOMContentLoaded", function() {
     function showMoreFavorite() {
-        const movieItems = document.querySelectorAll('.filme-item');
+        const movieItems = document.querySelectorAll('.favorito-item');
         movieItems.forEach((item, index) => {
             if (index >= 7) {
                 item.style.display = 'block';
@@ -227,7 +227,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function showLessFavorite() {
-        const movieItems = document.querySelectorAll('.filme-item');
+        const movieItems = document.querySelectorAll('.favorito-item');
         movieItems.forEach((item, index) => {
             if (index >= 7) {
                 item.style.display = 'none';
@@ -241,6 +241,35 @@ document.addEventListener("DOMContentLoaded", function() {
     window.showLessFavorite = showLessFavorite;
 
     showLessFavorite();
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    function showMoreReviews() {
+        const reviewItems = document.querySelectorAll('.review-item');
+        reviewItems.forEach((item, index) => {
+            if (index >= 7) {
+                item.style.display = 'block';
+            }
+        });
+        document.getElementById('show-more-reviews').style.display = 'none';
+        document.getElementById('show-less-reviews').style.display = 'block';
+    }
+
+    function showLessReviews() {
+        const reviewItems = document.querySelectorAll('.review-item');
+        reviewItems.forEach((item, index) => {
+            if (index >= 7) {
+                item.style.display = 'none';
+            }
+        });
+        document.getElementById('show-more-reviews').style.display = 'block';
+        document.getElementById('show-less-reviews').style.display = 'none';
+    }
+
+    window.showMoreReviews = showMoreReviews;
+    window.showLessReviews = showLessReviews;
+
+    showLessReviews();
 });
 
 

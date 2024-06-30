@@ -56,7 +56,7 @@
         </div>
         <div class="filme-container">
         {% for movie in favorito %}
-            <div class="filme-item">
+            <div class="favorito-item">
                 <div class="retangulo">
                     {% if movie.poster_path %}
                         <form action="{{ url_for('movie_detail', movie_id=movie.id) }}">
@@ -80,11 +80,14 @@
     <div class="filme-section">
         <div class="titulo-section">
             <h2 class="titulo-lista">Recent reviews</h2>
-            <p class="ver-todos">See all...</p>
+            <div class="button-container">
+                <a id="show-more-reviews" onclick="showMoreReviews()">Show all</a>
+                <a id="show-less-reviews" onclick="showLessReviews()">Show less</a>
+            </div>
         </div>
         <div class="filme-container">
             {% for movie in review %}
-            <div class="filme-item">
+            <div class="review-item">
                 <div class="retangulo">
                     {% if movie.poster_path %}
                         <form action="{{ url_for('movie_detail', movie_id=movie.id) }}">
