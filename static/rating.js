@@ -4,6 +4,11 @@ document.addEventListener('DOMContentLoaded', function() {
     var submitButton = document.getElementById('submit-rating');
     var stars = document.querySelectorAll('.star-icon');
     var rating = parseInt(user_rating) || 0;
+    var popup = document.getElementById('comment-popup');
+    var span = document.getElementsByClassName("close")[0];
+    var textarea = document.getElementById('comment-textarea');
+    var isLoggedIn = (is_logged_in === 'true');
+    
 
     if (rating > 0) {
         paintStars(rating);
@@ -17,7 +22,35 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     btnAvaliar.addEventListener('click', function() {
-        if (btnAvaliar.textContent === 'Delete') {
+        if (!isLoggedIn) {
+            fetch('/submit_rating', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    movie_id: movie_id
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                    rating = 0;
+                    paintStars(rating)
+                    avaliacao.classList.add('avaliacao-enviada');
+                    submitButton.style.display = 'none';
+                    btnAvaliar.textContent = 'Rate';
+                    stars.forEach(star => {
+                        star.style.pointerEvents = 'none';
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+        else if (btnAvaliar.textContent === 'Delete') {
             rating = 0;
             paintStars(rating);
             submitButton.style.display = 'none';
@@ -26,10 +59,12 @@ document.addEventListener('DOMContentLoaded', function() {
             avaliacao.classList.add('desabilitada');
             deleteRating()
         } else {
+            openPopup()
             avaliacao.classList.remove('desabilitada');
             stars.forEach(star => {
                 star.style.pointerEvents = 'auto';
             });
+            textarea.disabled = false;
         }
     });
 
@@ -58,6 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     submitButton.addEventListener('click', function() {
         if (rating > 0) {
+            var comentario = textarea.value;
             fetch('/submit_rating', {
                 method: 'POST',
                 headers: {
@@ -65,14 +101,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 body: JSON.stringify({
                     movie_id: movie_id,
-                    rating: rating
+                    rating: rating,
+                    comentario: comentario
                 }),
             })
             .then(response => response.json())
             .then(data => {
-                if (data.error) {
-                    alert(data.error);
-                } else {
+                if (data.message){
                     alert(data.message);
                     avaliacao.classList.add('avaliacao-enviada');
                     submitButton.style.display = 'none';
@@ -80,6 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     stars.forEach(star => {
                         star.style.pointerEvents = 'none';
                     });
+                    textarea.disabled = true;
                 }
             })
             .catch((error) => {
@@ -120,6 +156,26 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error:', error);
         });
     }
+
+    function openPopup() {
+        popup.style.display = "flex";
+    }
+
+    span.onclick = function() {
+        popup.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == popup) {
+            popup.style.display = "none";
+        }
+    }
+
+    // Ajusta a area de texto conforme o usuário digita
+    textarea.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+    });
 });
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -160,7 +216,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 document.addEventListener("DOMContentLoaded", function() {
     function showMoreFavorite() {
-        const movieItems = document.querySelectorAll('.filme-item');
+        const movieItems = document.querySelectorAll('.favorito-item');
         movieItems.forEach((item, index) => {
             if (index >= 7) {
                 item.style.display = 'block';
@@ -171,7 +227,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function showLessFavorite() {
-        const movieItems = document.querySelectorAll('.filme-item');
+        const movieItems = document.querySelectorAll('.favorito-item');
         movieItems.forEach((item, index) => {
             if (index >= 7) {
                 item.style.display = 'none';
@@ -185,6 +241,35 @@ document.addEventListener("DOMContentLoaded", function() {
     window.showLessFavorite = showLessFavorite;
 
     showLessFavorite();
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    function showMoreReviews() {
+        const reviewItems = document.querySelectorAll('.review-item');
+        reviewItems.forEach((item, index) => {
+            if (index >= 7) {
+                item.style.display = 'block';
+            }
+        });
+        document.getElementById('show-more-reviews').style.display = 'none';
+        document.getElementById('show-less-reviews').style.display = 'block';
+    }
+
+    function showLessReviews() {
+        const reviewItems = document.querySelectorAll('.review-item');
+        reviewItems.forEach((item, index) => {
+            if (index >= 7) {
+                item.style.display = 'none';
+            }
+        });
+        document.getElementById('show-more-reviews').style.display = 'block';
+        document.getElementById('show-less-reviews').style.display = 'none';
+    }
+
+    window.showMoreReviews = showMoreReviews;
+    window.showLessReviews = showLessReviews;
+
+    showLessReviews();
 });
 
 
