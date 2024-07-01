@@ -81,11 +81,11 @@
         <div class="elenco">
             <h2>Cast</h2><br>
             <ul id="cast-list">
-                {% for member in cast[:10] %}
+                {% for member in movie.cast[:10] %}
                     <li>{{ member.name }} - {{ member.character }}</li>
                 {% endfor %}
             </ul>
-            {% if cast|length > 10 %}
+            {% if movie.cast|length > 10 %}
                 <div class="button-container">
                     <button id="show-more" onclick="showMoreCast()">Show all</button>
                     <button id="show-less" onclick="showLessCast()" style="display: none;">Show less</button>
@@ -111,7 +111,7 @@
             {% endif %}
         </ul>
     </div>
-    <div id="full-cast-data" style="display: none;">{{ cast|tojson }}</div>
+    <div id="full-cast-data" style="display: none;">{{ movie.cast|tojson }}</div>
     <script>
         var movie_id = "{{ movie.id }}";
         var user_rating = "{{ user_rating }}";
