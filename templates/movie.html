@@ -41,7 +41,7 @@
                 {% endif %}
                 <div class="av_favorito_container">
                     <div class="favorito">
-                        <input type="checkbox" id="btn-favoritar" class="favoritar-checkbox" onclick="toggleFavorite('{{ movie_id }}')" {% if is_favorite %}checked{% endif %}>
+                        <input type="checkbox" id="btn-favoritar" class="favoritar-checkbox" onclick="toggleFavorite('{{ movie.id }}')" {% if is_favorite %}checked{% endif %}>
                         <label for="btn-favoritar" class="favoritar-label"></label>
                     </div>
                     <div class="comment-container">

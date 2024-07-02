@@ -241,9 +241,11 @@ def perfil():
 
 @app.route('/add_to_favorites', methods=['POST'])
 def add_to_favorites():
+    #user_id = flask_session['user_id']
     if 'user_id' in flask_session:
         user_id = flask_session['user_id']
-        movie_id = request.form.get('movie_id')
+        data = request.get_json()
+        movie_id = data.get('movie_id')
         if movie_id:
             session_db = Session()
             favorite = session_db.query(ListaFavoritos).filter_by(userName=user_id, movie_id=movie_id).first()
@@ -277,16 +279,18 @@ def add_to_favorites():
 
             session_db.close()
             return jsonify({'status': status})
-    return jsonify({'status': 'error'})
+    else:
+        return jsonify({'status': 'You must be logged in to favorite a movie'})
 
 
 @app.route('/rate_movie', methods=['POST'])
 def rate_movie():
     if 'user_id' in flask_session:
         user_id = flask_session['user_id']
-        movie_id = request.form.get('movie_id')
-        rating = int(request.form.get('rating'))
-        comentario = request.form.get('comentario')
+        data = request.get_json()
+        movie_id = data.get('movie_id')
+        rating = int(data.get('rating'))
+        comentario = data.get('comentario')
 
         if movie_id and rating:
             session_db = Session()
@@ -301,6 +305,33 @@ def rate_movie():
             session_db.close()
             return jsonify({'status': 'rated', 'new_rating': rating})
     return jsonify({'status': 'error'})
+
+@app.route('/delete_rating', methods=['POST'])
+def delete_rating():
+    if 'user_id' not in flask_session:
+        return jsonify({'error': 'You must be logged in to delete a rating.'}), 401
+
+    data = request.get_json()
+    movie_id = data.get('movie_id')
+    user_id = flask_session['user_id']
+
+    if not movie_id:
+        return jsonify({'error': 'Invalid data.'}), 400
+
+    session_db = Session()
+    try:
+        user_rating = session_db.query(Avaliacao).filter_by(id_filme=movie_id, UserName=user_id).first()
+        if user_rating:
+            session_db.delete(user_rating)
+            session_db.commit()
+            return jsonify({'message': 'Rating deleted successfully!'})
+        else:
+            return jsonify({'error': 'Rating not found.'}), 404
+    except IntegrityError:
+        session_db.rollback()
+        return jsonify({'error': 'An error occurred.'}), 400
+    finally:
+        session_db.close()
 
 socketio = SocketIO(app, cors_allowed_origins="*")
 @socketio.on('message')

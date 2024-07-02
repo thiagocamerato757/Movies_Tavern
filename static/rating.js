@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
     submitButton.addEventListener('click', function() {
         if (rating > 0) {
             var comentario = textarea.value;
-            fetch('/submit_rating', {
+            fetch('/rate_movie', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -107,8 +107,10 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => response.json())
             .then(data => {
-                if (data.message){
-                    alert(data.message);
+                if (data.status === 'error') {
+                    alert(data.message || 'There was an error processing your request.');
+                } else if (data.status === 'rated') {
+                    alert('Rating submitted successfully!');
                     avaliacao.classList.add('avaliacao-enviada');
                     submitButton.style.display = 'none';
                     btnAvaliar.textContent = 'Delete';
@@ -120,7 +122,10 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch((error) => {
                 console.error('Error:', error);
+                alert('An error occurred. Please try again later.');
             });
+        } else {
+            alert('Please select a rating before submitting.');
         }
     });
 
@@ -274,7 +279,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 function toggleFavorite(movieId) {
-    fetch('/toggle_favorite', {
+    fetch('/add_to_favorites', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -283,14 +288,15 @@ function toggleFavorite(movieId) {
     })
     .then(response => response.json())
     .then(data => {
-        if (data.error) {
-            alert(data.error);
+        if (data.status === 'error') {
+            alert(data.error || 'There was an error processing your request.');
             document.getElementById('btn-favoritar').checked = !document.getElementById('btn-favoritar').checked;
         } else {
-            alert(data.message);
+            alert(data.status === 'added' ? 'Added to favorites!' : 'Removed from favorites!');
         }
     })
     .catch((error) => {
         console.error('Error:', error);
+        // alert('An error occurred. Please try again later.');
     });
 }
