@@ -174,6 +174,20 @@ def login():
                 user = Usuario(user_db.UserName, user_db.Password, User_Class(user_db.Class))
                 flask_session['user_id'] = user.name
                 flask_session['user_class'] = user.user_class.class_user
+                
+                # Load user's favorite movies
+                session_db = Session()
+                favorites = session_db.query(ListaFavoritos).filter_by(userName=user.name).all()
+                favorite_movies = []
+                for favorite in favorites:
+                    movie_url = f'https://api.themoviedb.org/3/movie/{favorite.movie_id}?api_key={API_KEY}'
+                    movie_response = requests.get(movie_url)
+                    if movie_response.status_code == 200:
+                        movie = movie_response.json()
+                        favorite_movies.append(movie)
+                session_db.close()
+                flask_session['favorite_movies'] = favorite_movies
+
                 flash('Logged in successfully!', 'success')
                 return redirect(url_for('perfil'))
             else:
@@ -182,7 +196,6 @@ def login():
             flash("Username and password are required", "error")
 
     return render_template('login.html')
-
 
 @app.route('/logout')
 def logout():
@@ -237,15 +250,35 @@ def add_to_favorites():
             if favorite:
                 session_db.delete(favorite)
                 session_db.commit()
-                session_db.close()
-                return jsonify({'status': 'removed'})
+                status = 'removed'
             else:
                 favorite = ListaFavoritos(userName=user_id, movie_id=movie_id)
                 session_db.add(favorite)
                 session_db.commit()
-                session_db.close()
-                return jsonify({'status': 'added'})
+                status = 'added'
+
+                # Recalculate user class if a multiple of 7 favorites
+                total_favorites = session_db.query(ListaFavoritos).filter_by(userName=user_id).count()
+                if total_favorites % 7 == 0:
+                    user = session_db.query(User).filter_by(UserName=user_id).first()
+                    user_class = User_Class(user.Class)
+                    favorites = session_db.query(ListaFavoritos).filter_by(userName=user_id).all()
+                    favorite_movies = []
+                    for fav in favorites:
+                        movie_url = f'https://api.themoviedb.org/3/movie/{fav.movie_id}?api_key={API_KEY}'
+                        movie_response = requests.get(movie_url)
+                        if movie_response.status_code == 200:
+                            movie = movie_response.json()
+                            favorite_movies.append(movie)
+                    user_class.calculate_user_class(favorite_movies)
+                    user.Class = user_class.class_user
+                    session_db.commit()
+                    flask_session['user_class'] = user_class.class_user
+
+            session_db.close()
+            return jsonify({'status': status})
     return jsonify({'status': 'error'})
+
 
 @app.route('/rate_movie', methods=['POST'])
 def rate_movie():

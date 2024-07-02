@@ -13,6 +13,7 @@ class ListaFavoritos(Base):
     
     userName = Column(String(50), ForeignKey('users.UserName'), nullable=False)
     movie_id = Column(Integer)
+    genres = Column(String)  # Adiciona uma coluna para armazenar os gêneros
     __table_args__ = (
         PrimaryKeyConstraint('userName','movie_id'),
     )
