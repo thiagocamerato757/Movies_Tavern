@@ -68,12 +68,12 @@
                 </div>
             </div>
             <div class="movie-info">
-                <h1 class="titulto-filme">{{ movie.title }}</h1>
+                <h1 class="titulo-filme">{{ movie.title }}</h1>
                 <p>{{ movie.overview }}</p>
                 
                 <div class="avaliacao-geral">
                     <h2>Average rating</h2>
-                    <p>{{ average_rating }} / 5</p>
+                    <p>{{ movie.average_rating }} / 5</p>
                 </div>
             </div>
         </div>
@@ -96,8 +96,8 @@
     <div class="comments-section">
         <h2>Reviews</h2>
         <ul id="comments-list">
-            {% if comments %}
-                {% for comment in comments %}
+            {% if movie.comments %}
+                {% for comment in movie.comments %}
                 <li class="comment-item">
                     <div class="comment-user-info">
                         <a href="#" class="comment-user-name">{{ comment.UserName }}</a>
