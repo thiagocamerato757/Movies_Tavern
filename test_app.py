@@ -123,7 +123,7 @@ class TestApp(TestCase):
         with self.client.session_transaction() as sess:
             sess['user_id'] = 'testuser'
         
-        response = self.client.post('/toggle_favorite', json={
+        response = self.client.post('/add_to_favorites', json={
             'movie_id': 1
         })
         self.assertEqual(response.status_code, 200)
