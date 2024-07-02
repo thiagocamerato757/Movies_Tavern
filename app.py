@@ -7,6 +7,7 @@ from sqlalchemy.exc import IntegrityError
 from entidades import *
 from sqlalchemy import desc
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_socketio import SocketIO, send
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -267,5 +268,17 @@ def rate_movie():
             return jsonify({'status': 'rated', 'new_rating': rating})
     return jsonify({'status': 'error'})
 
+socketio = SocketIO(app, cors_allowed_origins="*")
+@socketio.on('message')
+def handle_message(message):
+    print("Received message: " + message)
+    if message != "User connected!":
+        send(message, broadcast=True)
+
+@app.route('/message')
+def index():
+    return render_template("message.html")
+
+    
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=8001) # Executa o aplicativo Flask no modo debug
