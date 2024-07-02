@@ -138,7 +138,8 @@ def cadastro_usuario():
     user_class = User_Class()
 
     if username and password:
-        user = Usuario(username, password, user_class)
+        password_hash = bcrypt.generate_password_hash(password)
+        user = Usuario(username, password_hash, user_class)
         user_db = User(UserName=user.name, Password=user.password, Class=user.user_class.class_user)
 
         try:
