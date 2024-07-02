@@ -11,6 +11,9 @@ from entidades.listaFavoritos import ListaFavoritos
 from entidades.user import User
 from entidades.avaliacao import Avaliacao
 from entidades.base import Base
+from  entidades.usuario import Usuario
+from entidades.movie import Movie
+from entidades.user_Class import User_Class
 
 # Caminho do arquivo do banco de dados
 DATABASE_PATH = 'dataBase.db'
