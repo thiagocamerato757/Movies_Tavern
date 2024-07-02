@@ -1,5 +1,5 @@
 class Movie:
-    def __init__(self, movie_data, cast, comments, average_rating):
+    def __init__(self, movie_data, cast, comments, average_rating, genre):
         self.id = movie_data['id']
         self.title = movie_data['title']
         self.poster_path = movie_data['poster_path']
@@ -7,3 +7,4 @@ class Movie:
         self.cast = cast
         self.comments = comments
         self.average_rating = average_rating
+        self.genre = genre

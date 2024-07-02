@@ -69,6 +69,7 @@
             </div>
             <div class="movie-info">
                 <h1 class="titulo-filme">{{ movie.title }}</h1>
+                <p>Genres: {{ ', '.join(movie.genre) }}</p>
                 <p>{{ movie.overview }}</p>
                 
                 <div class="avaliacao-geral">

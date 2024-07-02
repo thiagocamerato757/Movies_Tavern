@@ -66,7 +66,11 @@ def movie_detail(movie_id):
     movie_url = f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={API_KEY}'
     movie_response = requests.get(movie_url)
     movie = movie_response.json()
-    
+    genres = movie.get('genres')
+    genre_names = []
+    for genre in genres:
+        genre_names.append(genre['name'])
+
     credits_url = f'https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key={API_KEY}'
     credits_response = requests.get(credits_url)
     credits = credits_response.json()
@@ -96,7 +100,7 @@ def movie_detail(movie_id):
     average_rating_rounded = round(average_rating, 1)
 
     session_db.close()
-    movie_object = Movie(movie, cast, comments, average_rating_rounded)
+    movie_object = Movie(movie, cast, comments, average_rating_rounded, genre_names)
     return render_template('movie.html', movie=movie_object, is_favorite=is_favorite, user_rating=user_rating)
 
 def get_comments_for_movie(movie_id, user_id):
