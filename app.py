@@ -1,12 +1,13 @@
-import os
 from flask_bcrypt import Bcrypt
 from flask import Flask, render_template, request, redirect, url_for, flash, session as flask_session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import requests
+import re
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy import desc
-from flask_socketio import SocketIO, send
 from entidades import *
+from sqlalchemy import desc
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_socketio import SocketIO, send
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -16,20 +17,14 @@ bcrypt = Bcrypt(app)
 db = SQLAlchemy(app)
 
 if not app.config.get('TESTING', False):
-    FILE = ".config"
-    contents = open(FILE, "r").read()
+    file = ".config"
+    contents = open(file, "r").read()
     config = eval(contents)
     API_KEY = config['API_KEY']
 else:
     API_KEY = "test_api_key"
 
 def get_featured_movies():
-    """
-    Obtém uma lista de filmes populares da API do TMDb.
-
-    Retorna:
-        List[Dict]: Uma lista de dicionários contendo títulos e caminhos dos pôsteres dos filmes.
-    """
     url = f'https://api.themoviedb.org/3/movie/popular?api_key={API_KEY}'
     response = requests.get(url)
     data = response.json()
@@ -47,24 +42,11 @@ def get_featured_movies():
 
 @app.route('/')
 def home():
-    """
-    Rota principal que exibe a tela inicial com filmes populares.
-    """
     featured_movies = get_featured_movies()
     return render_template('TelaInicial.html', featured_movies=featured_movies)
 
 @app.route('/search', methods=['GET'])
 def search():
-    """
-    Rota de busca que pesquisa filmes na API do TMDb e exibe os resultados.
-
-    Parâmetros de URL:
-        query (str): A consulta de busca.
-        page (int): O número da página dos resultados da busca.
-
-    Retorna:
-        Template: O template search.html com os resultados da busca.
-    """
     query = request.args.get('query')
     page = request.args.get('page', 1, type=int)
     if query:
@@ -81,23 +63,10 @@ def search():
 
 @app.route('/movie/<int:movie_id>')
 def movie_detail(movie_id):
-    """
-    Rota que exibe os detalhes de um filme específico, incluindo gêneros e elenco.
-
-    Parâmetros de URL:
-        movie_id (int): O ID do filme.
-
-    Retorna:
-        Template: O template movie.html com os detalhes do filme.
-    """
     movie_url = f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={API_KEY}'
     movie_response = requests.get(movie_url)
     movie = movie_response.json()
-    genres = movie.get('genres')
-    genre_names = []
-    for genre in genres:
-        genre_names.append(genre['name'])
-
+    
     credits_url = f'https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key={API_KEY}'
     credits_response = requests.get(credits_url)
     credits = credits_response.json()
@@ -127,20 +96,10 @@ def movie_detail(movie_id):
     average_rating_rounded = round(average_rating, 1)
 
     session_db.close()
-    movie_object = Movie(movie, cast, comments, average_rating_rounded, genre_names)
+    movie_object = Movie(movie, cast, comments, average_rating_rounded)
     return render_template('movie.html', movie=movie_object, is_favorite=is_favorite, user_rating=user_rating)
 
 def get_comments_for_movie(movie_id, user_id):
-    """
-    Obtém os comentários de um filme específico, incluindo os do usuário logado, se houver.
-
-    Parâmetros:
-        movie_id (int): O ID do filme.
-        user_id (str): O nome de usuário do usuário logado (pode ser None).
-
-    Retorna:
-        List[Avaliacao]: Uma lista de objetos Avaliacao contendo os comentários.
-    """
     session_db = Session()
     comments = []
     if user_id:
@@ -155,17 +114,6 @@ def get_comments_for_movie(movie_id, user_id):
     return comments
 
 def pagination_range(current_page, total_pages, delta=1):
-    """
-    Gera uma lista de páginas para paginação com intervalos e elipses.
-
-    Parâmetros:
-        current_page (int): A página atual.
-        total_pages (int): O total de páginas.
-        delta (int): O intervalo de páginas ao redor da página atual.
-
-    Retorna:
-        List[Union[int, None]]: Uma lista de números de páginas e elipses (None).
-    """
     range_with_dots = []
     for p in range(1, total_pages + 1):
         if p == 1 or p == total_pages or (current_page - delta <= p <= current_page + delta):
@@ -176,27 +124,14 @@ def pagination_range(current_page, total_pages, delta=1):
 
 @app.context_processor
 def utility_processor():
-    """
-    Processador de contexto para adicionar a função pagination_range ao contexto do template.
-    """
     return dict(pagination_range=pagination_range)
 
 @app.route('/form')
 def form():
-    """
-    Rota que exibe o formulário de cadastro de usuário.
-    """
     return render_template("cadastro.html")
 
 @app.route('/cadastro_usuario', methods=['POST'])
 def cadastro_usuario():
-    """
-    Rota que realiza o cadastro de um novo usuário.
-
-    Retorna:
-        Redirect: Redireciona para a página de perfil se o cadastro for bem-sucedido, 
-        ou para o formulário de cadastro se ocorrer um erro.
-    """
     session_db = Session()
     username = request.form.get("username")
     password = request.form.get("password")
@@ -226,17 +161,6 @@ def cadastro_usuario():
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-    """
-    Rota que realiza o login do usuário.
-
-    Métodos:
-        POST: Realiza a autenticação do usuário.
-        GET: Exibe o formulário de login.
-
-    Retorna:
-        Redirect: Redireciona para a página de perfil se o login for bem-sucedido,
-        ou recarrega a página de login se ocorrer um erro.
-    """
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
@@ -275,24 +199,12 @@ def login():
 
 @app.route('/logout')
 def logout():
-    """
-    Rota que realiza o logout do usuário.
-
-    Retorna:
-        Redirect: Redireciona para a página inicial.
-    """
     flask_session.pop('user_id', None)
     flask_session.pop('user_class', None)
     return redirect(url_for('home'))
 
 @app.route('/perfil')
 def perfil():
-    """
-    Rota que exibe o perfil do usuário logado, incluindo seus filmes favoritos e avaliações recentes.
-
-    Retorna:
-        Template: O template perfil.html com os dados do usuário.
-    """
     if 'user_id' in flask_session:
         user_id = flask_session['user_id']
         session_db = Session()
@@ -329,17 +241,9 @@ def perfil():
 
 @app.route('/add_to_favorites', methods=['POST'])
 def add_to_favorites():
-    """
-    Rota que adiciona ou remove um filme dos favoritos do usuário.
-
-    Retorna:
-        JSON: O status da operação ('added' ou 'removed').
-    """
-    user_id = flask_session['user_id']
     if 'user_id' in flask_session:
         user_id = flask_session['user_id']
-        data = request.get_json()
-        movie_id = data.get('movie_id')
+        movie_id = request.form.get('movie_id')
         if movie_id:
             session_db = Session()
             favorite = session_db.query(ListaFavoritos).filter_by(userName=user_id, movie_id=movie_id).first()
@@ -373,24 +277,16 @@ def add_to_favorites():
 
             session_db.close()
             return jsonify({'status': status})
-    else:
-        return jsonify({'status': 'You must be logged in to favorite a movie'})
+    return jsonify({'status': 'error'})
 
 
 @app.route('/rate_movie', methods=['POST'])
 def rate_movie():
-    """
-    Rota que permite ao usuário avaliar um filme.
-
-    Retorna:
-        JSON: O status da operação ('rated') e a nova avaliação.
-    """
     if 'user_id' in flask_session:
         user_id = flask_session['user_id']
-        data = request.get_json()
-        movie_id = data.get('movie_id')
-        rating = int(data.get('rating'))
-        comentario = data.get('comentario')
+        movie_id = request.form.get('movie_id')
+        rating = int(request.form.get('rating'))
+        comentario = request.form.get('comentario')
 
         if movie_id and rating:
             session_db = Session()
@@ -406,58 +302,21 @@ def rate_movie():
             return jsonify({'status': 'rated', 'new_rating': rating})
     return jsonify({'status': 'error'})
 
-@app.route('/delete_rating', methods=['POST'])
-def delete_rating():
-    """
-    Rota que permite ao usuário deletar uma avaliação.
-
-    Retorna:
-        JSON: O status da operação ('message' ou 'error').
-    """
-    if 'user_id' not in flask_session:
-        return jsonify({'error': 'You must be logged in to delete a rating.'}), 401
-
-    data = request.get_json()
-    movie_id = data.get('movie_id')
-    user_id = flask_session['user_id']
-
-    if not movie_id:
-        return jsonify({'error': 'Invalid data.'}), 400
-
-    session_db = Session()
-    try:
-        user_rating = session_db.query(Avaliacao).filter_by(id_filme=movie_id, UserName=user_id).first()
-        if user_rating:
-            session_db.delete(user_rating)
-            session_db.commit()
-            return jsonify({'message': 'Rating deleted successfully!'})
-        else:
-            return jsonify({'error': 'Rating not found.'}), 404
-    except IntegrityError:
-        session_db.rollback()
-        return jsonify({'error': 'An error occurred.'}), 400
-    finally:
-        session_db.close()
-
 socketio = SocketIO(app, cors_allowed_origins="*")
 @socketio.on('message')
 def handle_message(message):
-    """
-    Manipulador de mensagens recebidas pelo Socket.IO.
-
-    Parâmetros:
-        message (str): A mensagem recebida.
-    """
     print("Received message: " + message)
     if message != "User connected!":
         send(message, broadcast=True)
 
 @app.route('/message')
-def index():
-    """
-    Rota que exibe a página de mensagens.
-    """
-    return render_template("message.html")
+def message():
+    if 'user_id' in flask_session:
+        username = flask_session['user_id']
+    else:
+        username = ''
+    return render_template("message.html", username=username)
+
 
     
 if __name__ == '__main__':
