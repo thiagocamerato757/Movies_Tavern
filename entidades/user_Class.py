@@ -29,14 +29,14 @@ class User_Class:
         self.class_user = new_class
 
 genre_map = {
-    "Guerreiro": ["Action","Thriller"],
-    "Mago": ["Fantasy","Science Fiction"],
-    "Ladino": ["Crime", "Mystery", "Horror"],
-    "Clérigo": ["Drama", "History","Documentary"],
-    "Bárbaro": ["War", "Western"],
-    "Druida": ["Animation", "TV Movie"],
-    "Bardo": ["Music", "Romance", "Comedy"],
-    "Paladino": ["Family","Adventure"]
+    "Warrior": ["Action","Thriller"], #Guerreiro
+    "Wizard": ["Fantasy","Science Fiction"], #Mago
+    "Rogue": ["Crime", "Mystery", "Horror"], #Ladino
+    "Cleric": ["Drama", "History","Documentary"], #Clérigo
+    "Barbarian": ["War", "Western"], #Bárbaro
+    "Druid": ["Animation", "TV Movie"], #Druida
+    "Bard": ["Music", "Romance", "Comedy"], #Bardo
+    "Paladin": ["Family","Adventure"] #Paladino
 }
 
 # Lista de filmes de exemplo para retornar "Paladino", mas misturando gêneros

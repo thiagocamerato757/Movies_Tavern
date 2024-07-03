@@ -13,8 +13,26 @@
                 <nav>
                     <ul>
                         {% if 'user_id' in session %}
-                            <li><a href="/perfil"><img src="{{ url_for('static', filename='campones.jpg') }}" class="icone-perfil"></a></li>
-                            <li><a href="/" class="home">Home</a></li>
+                            {% if classe == 'Peasant' %}
+                                <li><a href="/perfil"><img src="{{ url_for('static', filename='peasant.jpg') }}" class="icone-perfil"></a></li>
+                            {% elif classe == 'Warrior' %}
+                                <li><a href="/perfil"><img src="{{ url_for('static', filename='warrior.jpg') }}" class="icone-perfil"></a></li>
+                            {% elif classe == 'Wizard' %}
+                                <li><a href="/perfil"><img src="{{ url_for('static', filename='wizard.jpg') }}" class="icone-perfil"></a></li>
+                            {% elif classe == 'Rogue' %}
+                                <li><a href="/perfil"><img src="{{ url_for('static', filename='rogue.jpg') }}" class="icone-perfil"></a></li>
+                            {% elif classe == 'Cleric' %}
+                                <li><a href="/perfil"><img src="{{ url_for('static', filename='cleric.jpg') }}" class="icone-perfil"></a></li>
+                            {% elif classe == 'Barbarian' %}
+                                <li><a href="/perfil"><img src="{{ url_for('static', filename='barbarian.jpg') }}" class="icone-perfil"></a></li>
+                            {% elif classe == 'Druid' %}
+                                <li><a href="/perfil"><img src="{{ url_for('static', filename='druid.jpg') }}" class="icone-perfil"></a></li>
+                            {% elif classe == 'Bard' %}
+                                <li><a href="/perfil"><img src="{{ url_for('static', filename='bard.jpg') }}" class="icone-perfil"></a></li>
+                            {% else %}
+                                <li><a href="/perfil"><img src="{{ url_for('static', filename='paladin.jpg') }}" class="icone-perfil"></a></li>
+                            {% endif %}
+                                <li><a href="/" class="home">Home</a></li>
                         {% else %}
                             <li><a href="/login">Sign in</a></li>
                             <li><a href="/form">Create account</a></li>

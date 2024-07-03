@@ -15,7 +15,25 @@
                     <ul>
                         {% if 'user_id' in session %}
                             <li><a href="message" class="Mensagem">message</a></li>
-                            <li><a href="/perfil"><img src="{{ url_for('static', filename='campones.jpg') }}" class="icone-perfil"></a></li>
+                            {% if classe == 'Peasant' %}
+                                <li><a href="/perfil"><img src="{{ url_for('static', filename='peasant.jpg') }}" class="icone-perfil"></a></li>
+                            {% elif classe == 'Warrior' %}
+                                <li><a href="/perfil"><img src="{{ url_for('static', filename='warrior.jpg') }}" class="icone-perfil"></a></li>
+                            {% elif classe == 'Wizard' %}
+                                <li><a href="/perfil"><img src="{{ url_for('static', filename='wizard.jpg') }}" class="icone-perfil"></a></li>
+                            {% elif classe == 'Rogue' %}
+                                <li><a href="/perfil"><img src="{{ url_for('static', filename='rogue.jpg') }}" class="icone-perfil"></a></li>
+                            {% elif classe == 'Cleric' %}
+                                <li><a href="/perfil"><img src="{{ url_for('static', filename='cleric.jpg') }}" class="icone-perfil"></a></li>
+                            {% elif classe == 'Barbarian' %}
+                                <li><a href="/perfil"><img src="{{ url_for('static', filename='barbarian.jpg') }}" class="icone-perfil"></a></li>
+                            {% elif classe == 'Druid' %}
+                                <li><a href="/perfil"><img src="{{ url_for('static', filename='druid.jpg') }}" class="icone-perfil"></a></li>
+                            {% elif classe == 'Bard' %}
+                                <li><a href="/perfil"><img src="{{ url_for('static', filename='bard.jpg') }}" class="icone-perfil"></a></li>
+                            {% else %}
+                                <li><a href="/perfil"><img src="{{ url_for('static', filename='paladin.jpg') }}" class="icone-perfil"></a></li>
+                            {% endif %}
                             <li><a href="/" class="home">Home</a></li>
                         {% else %}
                             <li><a href="/login">Sign in</a></li>
@@ -35,7 +53,25 @@
     </header>
     <div class='perfil'>
         <div class="foto-perfil">
-            <img src="{{ url_for('static', filename='campones.jpg') }}" class="icone-perfil-grande">
+            {% if classe == 'Peasant' %}
+                <img src="{{ url_for('static', filename='peasant.jpg') }}" class="icone-perfil-grande">
+            {% elif classe == 'Warrior' %}
+                <img src="{{ url_for('static', filename='warrior.jpg') }}" class="icone-perfil-grande">
+            {% elif classe == 'Wizard' %}
+                <img src="{{ url_for('static', filename='wizard.jpg') }}" class="icone-perfil-grande">
+            {% elif classe == 'Rogue' %}
+                <img src="{{ url_for('static', filename='rogue.jpg') }}" class="icone-perfil-grande">
+            {% elif classe == 'Cleric' %}
+                <img src="{{ url_for('static', filename='cleric.jpg') }}" class="icone-perfil-grande">
+            {% elif classe == 'Barbarian' %}
+                <img src="{{ url_for('static', filename='barbarian.jpg') }}" class="icone-perfil-grande">
+            {% elif classe == 'Druid' %}
+                <img src="{{ url_for('static', filename='druid.jpg') }}" class="icone-perfil-grande">
+            {% elif classe == 'Bard' %}
+                <img src="{{ url_for('static', filename='bard.jpg') }}" class="icone-perfil-grande">
+            {% else %}
+                <img src="{{ url_for('static', filename='paladin.jpg') }}" class="icone-perfil-grande">
+            {% endif %}
         </div>
         <div class="descricao-perfil">
             <nav>

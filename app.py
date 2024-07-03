@@ -50,8 +50,9 @@ def home():
     """
     Rota principal que exibe a tela inicial com filmes populares.
     """
+    user_class = flask_session.get('user_class', None)
     featured_movies = get_featured_movies()
-    return render_template('TelaInicial.html', featured_movies=featured_movies)
+    return render_template('TelaInicial.html', featured_movies=featured_movies, classe=user_class)
 
 @app.route('/search', methods=['GET'])
 def search():
@@ -77,7 +78,8 @@ def search():
     else:
         movies = []
         total_pages = 1
-    return render_template('search.html', movies=sorted_movies, query=query, page=page, total_pages=total_pages)
+    user_class = flask_session.get('user_class', None)
+    return render_template('search.html', movies=sorted_movies, query=query, page=page, total_pages=total_pages, classe=user_class)
 
 @app.route('/movie/<int:movie_id>')
 def movie_detail(movie_id):
@@ -128,7 +130,8 @@ def movie_detail(movie_id):
 
     session_db.close()
     movie_object = Movie(movie, cast, comments, average_rating_rounded, genre_names)
-    return render_template('movie.html', movie=movie_object, is_favorite=is_favorite, user_rating=user_rating)
+    user_class = flask_session.get('user_class', None)
+    return render_template('movie.html', movie=movie_object, is_favorite=is_favorite, user_rating=user_rating, classe=user_class)
 
 def get_comments_for_movie(movie_id, user_id):
     """
@@ -457,7 +460,11 @@ def index():
     """
     Rota que exibe a página de mensagens.
     """
-    return render_template("message.html")
+    if 'user_id' in flask_session:
+        username = flask_session['user_id']
+    else:
+        username = ''
+    return render_template("message.html", username=username)
 
     
 if __name__ == '__main__':
