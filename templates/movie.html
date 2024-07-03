@@ -119,7 +119,11 @@
                 {% for comment in movie.comments %}
                 <li class="comment-item">
                     <div class="comment-user-info">
-                        <a href="#" class="comment-user-name">{{ comment.UserName }}</a>
+                        {% if session['user_id'] == comment.UserName %}
+                            <a href="/perfil" class="comment-user-name">{{ comment.UserName }}</a>
+                        {% else %}
+                            <a href="/perfil/{{ comment.UserName }}" class="comment-user-name">{{ comment.UserName }}</a>
+                        {% endif %}
                         <span class="comment-user-rating">{{ comment.stars }} <span style="font-size: 20px;">&#9733;</span></span>
                     </div>
                     <p class="comment-text">{{ comment.comentario }}</p>

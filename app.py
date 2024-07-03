@@ -78,6 +78,7 @@ def search():
     else:
         movies = []
         total_pages = 1
+
     user_class = flask_session.get('user_class', None)
     return render_template('search.html', movies=sorted_movies, query=query, page=page, total_pages=total_pages, classe=user_class)
 
@@ -130,6 +131,7 @@ def movie_detail(movie_id):
 
     session_db.close()
     movie_object = Movie(movie, cast, comments, average_rating_rounded, genre_names)
+
     user_class = flask_session.get('user_class', None)
     return render_template('movie.html', movie=movie_object, is_favorite=is_favorite, user_rating=user_rating, classe=user_class)
 
@@ -320,15 +322,58 @@ def perfil():
                 if movie_response.status_code == 200:
                     movie = movie_response.json()
                     filmes_favoritos.append(movie)
+            
+            user = session_db.query(User).filter_by(UserName=user_id).first()
         except:
             flash('Error loading favorite movies or recent reviews', 'error')
             return redirect(url_for('login'))
         finally:
             session_db.close()
 
-        return render_template('perfil.html', usuario=flask_session['user_id'], classe=flask_session['user_class'], favorito=filmes_favoritos, recent_reviews=recent_reviews)
+        return render_template('perfil.html', usuario=user, classe=flask_session['user_class'], favorito=filmes_favoritos, recent_reviews=recent_reviews, own_profile=True)
     else:
         return redirect(url_for('login'))
+
+@app.route('/perfil/<user_id>')
+def check_perfil(user_id):
+    if 'user_id' in flask_session and flask_session['user_id'] == user_id:
+        return perfil()
+    else:
+        session_db = Session()
+
+        try:
+            reviews = session_db.query(Avaliacao).filter_by(UserName=user_id).all()
+            recent_reviews = []
+            for review in reviews:
+                id_filme = review.id_filme
+                url_filme = f'https://api.themoviedb.org/3/movie/{id_filme}?api_key={API_KEY}'
+                filme_response = requests.get(url_filme)
+                if filme_response.status_code == 200:
+                    filme = filme_response.json()
+                    recent_reviews.append(filme)
+
+            favoritos = session_db.query(ListaFavoritos).filter_by(userName=user_id).all()
+            filmes_favoritos = []
+            for favorito in favoritos:
+                movie_id = favorito.movie_id
+                movie_url = f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={API_KEY}'
+                movie_response = requests.get(movie_url)
+                if movie_response.status_code == 200:
+                    movie = movie_response.json()
+                    filmes_favoritos.append(movie)
+
+            user = session_db.query(User).filter_by(UserName=user_id).first()
+            user_class = User_Class(user.Class)
+            session_user_id = flask_session['user_id']
+            session_user = session_db.query(User).filter_by(UserName=session_user_id).first()
+        except:
+            flash('Error loading favorite movies or recent reviews', 'error')
+            return redirect(url_for('login'))
+        finally:
+            session_db.close()
+
+        return render_template('perfil.html', usuario=user, session_user=session_user, classe=user_class, favorito=filmes_favoritos, recent_reviews=recent_reviews, own_profile=False)
+
 
 @app.route('/add_to_favorites', methods=['POST'])
 def add_to_favorites():

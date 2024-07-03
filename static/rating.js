@@ -223,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function showMoreFavorite() {
         const movieItems = document.querySelectorAll('.favorito-item');
         movieItems.forEach((item, index) => {
-            if (index >= 7) {
+            if (index >= 4) {
                 item.style.display = 'block';
             }
         });
@@ -234,7 +234,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function showLessFavorite() {
         const movieItems = document.querySelectorAll('.favorito-item');
         movieItems.forEach((item, index) => {
-            if (index >= 7) {
+            if (index >= 4) {
                 item.style.display = 'none';
             }
         });
@@ -252,7 +252,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function showMoreReviews() {
         const reviewItems = document.querySelectorAll('.review-item');
         reviewItems.forEach((item, index) => {
-            if (index >= 7) {
+            if (index >= 4) {
                 item.style.display = 'block';
             }
         });
@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function showLessReviews() {
         const reviewItems = document.querySelectorAll('.review-item');
         reviewItems.forEach((item, index) => {
-            if (index >= 7) {
+            if (index >= 4) {
                 item.style.display = 'none';
             }
         });

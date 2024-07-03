@@ -66,8 +66,16 @@ nav ul li a:hover {
     height: 35px;
     margin-right: 20px;
 }
+
 .Mensagem{
-    vertical-align: -7px;
+    font-size: 20px; 
+    color: white; 
+    margin-left: 30%;
+    transition: color 0.3s;
+}
+
+.Mensagem:hover{
+    color: #C5A647;
 }
 
 .botao_logo {
