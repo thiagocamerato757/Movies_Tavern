@@ -130,7 +130,7 @@ class TestApp(TestCase):
 
         user_class = User_Class()
         user_class.calculate_user_class(favorite_movies)
-        self.assertEqual(user_class.class_user, "Paladino")
+        self.assertEqual(user_class.class_user, "Paladin")
 
     def test_calculate_user_class_mago(self):
         favorite_movies = [
@@ -143,7 +143,7 @@ class TestApp(TestCase):
 
         user_class = User_Class()
         user_class.calculate_user_class(favorite_movies)
-        self.assertEqual(user_class.class_user, "Mago")
+        self.assertEqual(user_class.class_user, "Wizard")
 
     def test_calculate_user_class_guerreiro(self):
         favorite_movies = [
@@ -155,7 +155,7 @@ class TestApp(TestCase):
 
         user_class = User_Class()
         user_class.calculate_user_class(favorite_movies)
-        self.assertEqual(user_class.class_user, "Guerreiro")
+        self.assertEqual(user_class.class_user, "Warrior")
 
 
 if __name__ == '__main__':
